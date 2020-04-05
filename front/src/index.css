@@ -1,0 +1,88 @@
+/* !important because of bootstrap styles */
+
+@font-face {
+  font-family: Poppins-Regular;
+  src: url('./fonts/Poppins-Regular.ttf');
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: #f4f4f4!important;
+  margin-left: auto!important;
+  margin-right: auto!important;
+  max-width: 1200px;
+  height: inherit;
+  font-family: Poppins-Regular !important;
+}
+
+a {
+  color: #c0c2c4!important;
+  text-decoration: none!important;
+}
+
+a:hover {
+  color: #a4a6a8!important;
+}
+
+h1 {
+  border-bottom: 2px solid #ffffff;
+  margin-bottom: 20px !important;
+}
+
+h3 {
+  border-bottom: 1px solid #ffffff;
+  margin-bottom: 10px !important;
+}
+
+P {
+  margin-bottom: 5px !important;
+}
+
+.fullHeight {
+  height: 100%;
+  text-align: center;
+}
+
+.headerStyle {
+  border-bottom:1px solid #343a40;
+}
+
+.mainContainerStyle {
+  display:inline-block;
+  width:100%;
+  text-align:center;
+  padding: 10px 30px;
+}
+
+.formGroupStyle {
+  width: 400px;
+  margin: 20px auto;
+}
+
+.errorMsgStyle {
+  color: #c00f0f;
+}
+
+.leftCenteredDiv {
+  text-align: left;
+  margin-left: 20px;
+}
+
+.authFormStyle {
+  width: max-content;
+  border: #343a40 solid;
+  margin: 20px auto;
+}
+
+.authFormLogoStyle {
+  background: #343a40;
+  color: #f4f4f4;
+  padding: 20px 10px;
+}
+
+.authFormContentStyle {
+  padding: 20px;
+}
