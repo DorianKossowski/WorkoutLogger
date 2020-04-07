@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 
 import AuthenticationService from '../helpers/auth/AuthenticationService';
+import ErrorAlert from './helpers/ErrorAlert';
 
 class LoginComponent extends Component {
 
@@ -14,12 +15,13 @@ class LoginComponent extends Component {
 
     handleSubmit() {
         return (values, actions) => {
+            this.setState({ errMsg: '' })
             AuthenticationService.executeBasicAuthenticationService(values.mail, values.password)
             .then(() => {
                 AuthenticationService.registerSuccessfulLogin(values.mail, values.password);
                 this.setState({ redirect: true });
             }).catch((error) => {
-                this.setState({ errMsg: this.getErrorMsg(error) });
+                this.setState({ errMsg: 'Login failed: ' + error });
                 actions.setSubmitting(false);
             })
         };
@@ -55,9 +57,16 @@ class LoginComponent extends Component {
 
     getLoginForm() {
         return (
+            <>
+            <ErrorAlert msg={this.state.errMsg}/>
             <div className='authFormContentStyle'>
                 <h2>Login</h2>
-                <Formik initialErrors={{ mail: 'Required', password: 'Required' }} initialValues={{ mail: '', password: '' }} validate={this.validateFields()} onSubmit={this.handleSubmit()}>
+                <Formik 
+                    initialErrors={{ mail: 'Required', password: 'Required' }} 
+                    initialValues={{ mail: '', password: '' }} 
+                    validate={this.validateFields()} 
+                    onSubmit={this.handleSubmit()}
+                >
                     {({ isSubmitting, isValid }) => (<Form>
                         <div className='formGroupStyle'>
                             <h6>Mail</h6>
@@ -73,6 +82,7 @@ class LoginComponent extends Component {
                     </Form>)}
                 </Formik>
             </div>
+            </>
         );
     }
 }

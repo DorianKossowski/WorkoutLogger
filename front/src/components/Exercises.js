@@ -4,23 +4,26 @@ import api from '../helpers/Api.js';
 import GenericTable from './genericTable/GenericTable';
 import AddExerciseModal from './AddExerciseModal';
 import OvalLoader from './helpers/OvalLoader';
+import ErrorAlert from './helpers/ErrorAlert';
 
 class Exercises extends Component {
     
     state = {
         exercises : [],
         showModal: false,
-        loading: false
+        loading: false,
+        errMsg: ''
     }
 
     componentDidMount() {
         this.setState({ loading: true });
+        this.setState({ errMsg: '' })
         api({
             method: 'GET',
             url: 'exercises'
         })
-        .then(data => this.setState({exercises : data}))
-        .catch(e => console.log('Get error: ', e))
+        .then(data => this.setState({ exercises: data }))
+        .catch(error => this.setState({ errMsg: error }))
         .finally(() => this.setState({ loading: false }));
     }
 
@@ -39,6 +42,7 @@ class Exercises extends Component {
     render() {
         return (
             <div>
+                <ErrorAlert msg={this.state.errMsg}/>
                 <h1>Exercises</h1>
                 {this.state.loading ? <OvalLoader/> : this.getExercisesRender()}
             </div>
