@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap/';
+import { LinkContainer } from "react-router-bootstrap";
 
 import './mainViewContainer.css'
 import AuthenticationService from '../helpers/auth/AuthenticationService';
@@ -17,15 +17,15 @@ class AuthorizedViewContainer extends Component {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className='mr-auto'>
-                        <Nav.Link as='div'><Link to='/'>Home</Link></Nav.Link>
-                        <Nav.Link as='div'><Link to='/exercises'>Exercises</Link></Nav.Link>
-                        <Nav.Link as='div'><Link to='/workout'>Workout</Link></Nav.Link>
+                        <LinkContainer to='/'><Nav.Link>Home</Nav.Link></LinkContainer>
+                        <LinkContainer to='/exercises'><Nav.Link>Exercises</Nav.Link></LinkContainer>
+                        <LinkContainer to='/workout'><Nav.Link>Workout</Nav.Link></LinkContainer>
                     </Nav>
                     <Nav>
-                        <NavDropdown title={"Hello " + AuthenticationService.getAuthenticatedUser()}  id="basic-nav-dropdown" className="justify-content-end">
+                        <NavDropdown title={"Hello " + AuthenticationService.getAuthenticatedUser()}  id="basic-nav-dropdown">
                         <NavDropdown.Item>Account</NavDropdown.Item>
                         <NavDropdown.Divider />
-                        <NavDropdown.Item as='div'><Link to='/logout'>Log out</Link></NavDropdown.Item>
+                        <LinkContainer to='/logout'><NavDropdown.Item>Log out</NavDropdown.Item></LinkContainer>
                         </NavDropdown>
                     </Nav>
                     </Navbar.Collapse>
