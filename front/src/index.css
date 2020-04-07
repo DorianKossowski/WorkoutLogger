@@ -28,7 +28,7 @@ a:hover {
 }
 
 h1 {
-  border-bottom: 2px solid #ffffff;
+  border-bottom: 2px solid #343a40;
   margin-bottom: 20px !important;
 }
 
@@ -81,6 +81,10 @@ P {
   background: #343a40;
   color: #f4f4f4;
   padding: 20px 10px;
+}
+
+.authFormStyle h1 {
+  border-bottom: 2px solid #f4f4f4;
 }
 
 .authFormContentStyle {
