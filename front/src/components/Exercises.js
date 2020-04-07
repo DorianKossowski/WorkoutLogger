@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Api from '../helpers/Api.js';
+import api from '../helpers/Api.js';
 import GenericTable from './genericTable/GenericTable';
 import AddExerciseModal from './AddExerciseModal';
 
@@ -12,8 +12,10 @@ class Exercises extends Component {
     }
 
     componentDidMount() {
-        Api.get('exercises')
-        .then(response => response.data)
+        api({
+            method: 'GET',
+            url: 'exercises'
+        })
         .then(data => this.setState({exercises : data}))
         .catch(e => console.log('Get error: ', e));
     }

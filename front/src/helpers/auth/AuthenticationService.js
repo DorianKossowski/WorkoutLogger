@@ -1,4 +1,4 @@
-import Api, { AUTH_HEADER_TOKEN } from '../Api';
+import api, { AUTH_HEADER_TOKEN } from '../Api';
 
 export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
 
@@ -13,9 +13,11 @@ class AuthenticationService {
     }
 
     executeBasicAuthenticationService(mail, password) {
-        return Api.get('basicLogin',
-            { headers: { Authorization: this.createBasicAuthToken(mail, password) } }
-        );
+        return api({
+                method: 'GET', 
+                url: 'basicLogin',
+                headers: { Authorization: this.createBasicAuthToken(mail, password) } 
+            });
     }
 
     createBasicAuthToken(mail, password) {
@@ -28,13 +30,13 @@ class AuthenticationService {
     }
 
     executeLogoutService() {
-        Api.post('basicLogout')
-            .then(() => {
-                sessionStorage.clear();
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+        api({
+            method: 'POST',
+            url: 'basicLogout'
+        })
+        .then(() => {
+            sessionStorage.clear();
+        })
     }
 }
 
