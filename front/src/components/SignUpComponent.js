@@ -3,11 +3,11 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 
-import AuthenticationService from '../helpers/auth/AuthenticationService';
+import Api from '../helpers/Api';
 import ErrorAlert from './helpers/ErrorAlert';
 import handleError from '../helpers/ErrorHandlingService';
 
-class LoginComponent extends Component {
+class SignUpCompnent extends Component {
 
     state = {
         redirect: false,
@@ -17,12 +17,15 @@ class LoginComponent extends Component {
     handleSubmit() {
         return (values, actions) => {
             this.setState({ errMsg: '' })
-            AuthenticationService.executeBasicAuthenticationService(values.username, values.password)
+            Api({
+                method: 'POST',
+                url: 'signup',
+                data: { ...values }
+            })
             .then(() => {
-                AuthenticationService.registerSuccessfulLogin(values.username, values.password);
                 this.setState({ redirect: true });
             }).catch((error) => {
-                this.setState({ errMsg: handleError(error, 'Login failed: ') });
+                this.setState({ errMsg: handleError(error, 'Sign up failed: ') });
                 actions.setSubmitting(false);
             })
         };
@@ -31,12 +34,18 @@ class LoginComponent extends Component {
     validateFields() {
         return (values) => {
             const errors = {};
+            if(!values.mail) {
+                errors.mail = 'Mail is required';
+            }
             if(!values.username) {
                 errors.username = 'Username is required';
             }
-            if(!values.password) {
-                errors.password = 'Password is required';
+            if(!values.password || !values.repPassword) {
+                errors.repPassword = 'Passwords are required';
+            } else if(values.password !== values.repPassword) {
+                errors.repPassword = 'Passwords are different';
             }
+            
             return errors;
         };
     }
@@ -47,8 +56,8 @@ class LoginComponent extends Component {
                 <div className='authFormLogoStyle'>
                     <h1>Workout Logger</h1>
                 </div>
-                {this.state.redirect ? <Redirect to='/'/> : this.getLoginForm()}
-                <div className='dontHaveAccountStyle'>Don't have an account? <Link to='/signup'>Sign up</Link></div>
+                {this.state.redirect ? <Redirect to='/login'/> : this.getLoginForm()}
+                <div className='dontHaveAccountStyle'>Already have an account? <Link to='/login'>Log in</Link></div>
             </div>
         )
     }
@@ -58,14 +67,19 @@ class LoginComponent extends Component {
             <>
             <ErrorAlert msg={this.state.errMsg}/>
             <div className='authFormContentStyle'>
-                <h2>Login</h2>
+                <h2>Sign up</h2>
                 <Formik 
-                    initialErrors={{ username: 'Required', password: 'Required' }} 
-                    initialValues={{ username: '', password: '' }} 
+                    initialErrors={{ mail: 'Required', username: 'Required', repPassword: 'Required' }} 
+                    initialValues={{ mail: '', username: '', repPassword: '' }} 
                     validate={this.validateFields()} 
                     onSubmit={this.handleSubmit()}
                 >
                     {({ isSubmitting, isValid }) => (<Form>
+                        <div className='formGroupStyle'>
+                            <h6>Mail</h6>
+                            <Field className='form-control' name="mail" type="email" placeholder="mail"/>
+                            <ErrorMessage className='errorMsgStyle' name="mail" component="div"/>
+                        </div>
                         <div className='formGroupStyle'>
                             <h6>Username</h6>
                             <Field className='form-control' name="username" type="text" placeholder="username"/>
@@ -74,9 +88,12 @@ class LoginComponent extends Component {
                         <div className='formGroupStyle'>
                             <h6>Password</h6>
                             <Field className='form-control' name='password' type="password" placeholder="password"/>
-                            <ErrorMessage className='errorMsgStyle' name="password" component="div"/>
                         </div>
-                        <div className='forgotPasswordTextStyle'><a>Forgot your password?</a></div>
+                        <div className='formGroupStyle'>
+                            <h6>Repeat password</h6>
+                            <Field className='form-control' name='repPassword' type="password" placeholder="password"/>
+                            <ErrorMessage className='errorMsgStyle' name="repPassword" component="div"/>
+                        </div>
                         <Button type="submit" disabled={isSubmitting || !isValid}>Submit</Button>
                     </Form>)}
                 </Formik>
@@ -86,4 +103,4 @@ class LoginComponent extends Component {
     }
 }
 
-export default LoginComponent;
+export default SignUpCompnent;

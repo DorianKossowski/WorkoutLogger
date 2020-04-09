@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import './index.css';
 
 import LoginComponent from './components/LoginComponent';
+import SignUpComponent from './components/SignUpComponent';
 import AuthorizedViewContainer from './containers/AuthorizedViewContainer';
 import AuthenticatedRoute from './helpers/auth/AuthenticatedRoute';
 
@@ -15,6 +16,7 @@ class App extends Component {
         <Router>
           <Switch>
             <Route exact path='/login' component={LoginComponent}/>
+            <Route exact path='/signup' component={SignUpComponent}/>
             <AuthenticatedRoute component={AuthorizedViewContainer}/>
           </Switch>
         </Router>

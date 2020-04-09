@@ -12,21 +12,21 @@ class AuthenticationService {
         return sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
     }
 
-    executeBasicAuthenticationService(mail, password) {
+    executeBasicAuthenticationService(username, password) {
         return api({
                 method: 'GET', 
                 url: 'basicLogin',
-                headers: { Authorization: this.createBasicAuthToken(mail, password) } 
+                headers: { Authorization: this.createBasicAuthToken(username, password) } 
             });
     }
 
-    createBasicAuthToken(mail, password) {
-        return 'Basic ' + window.btoa(mail + ":" + password);
+    createBasicAuthToken(username, password) {
+        return 'Basic ' + window.btoa(username + ":" + password);
     }
 
-    registerSuccessfulLogin(mail, password) {
-        sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, mail);
-        sessionStorage.setItem(AUTH_HEADER_TOKEN, this.createBasicAuthToken(mail, password));
+    registerSuccessfulLogin(username, password) {
+        sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username);
+        sessionStorage.setItem(AUTH_HEADER_TOKEN, this.createBasicAuthToken(username, password));
     }
 
     executeLogoutService() {
