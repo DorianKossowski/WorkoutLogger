@@ -1,5 +1,6 @@
 package com.zti.workoutLogger.configurations;
 
+import com.zti.workoutLogger.services.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,7 +17,8 @@ import javax.sql.DataSource;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
     @Autowired
     private DataSource dataSource;
     @Autowired
@@ -24,6 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);
         auth
                 .jdbcAuthentication()
                 .dataSource(dataSource)

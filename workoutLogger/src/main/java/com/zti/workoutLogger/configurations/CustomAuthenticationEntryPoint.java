@@ -12,7 +12,6 @@ import java.io.Serializable;
 
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
-
     private static final long serialVersionUID = -8970718410437077606L;
 
     @Override
