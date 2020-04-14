@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 
-import Api from '../helpers/Api';
+import api from '../helpers/Api';
 import ErrorAlert from './helpers/ErrorAlert';
 import handleError from '../helpers/ErrorHandlingService';
 
@@ -17,7 +17,7 @@ class SignUpCompnent extends Component {
     handleSubmit() {
         return (values, actions) => {
             this.setState({ errMsg: '' })
-            Api({
+            api({
                 method: 'POST',
                 url: 'signup',
                 data: { ...values }

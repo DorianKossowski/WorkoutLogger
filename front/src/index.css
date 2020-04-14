@@ -64,6 +64,7 @@ P {
 
 .errorMsgStyle {
   color: #c00f0f;
+  margin: 5px 0;
 }
 
 .leftCenteredDiv {
@@ -118,4 +119,8 @@ P {
 .errorAlertStyle {
   width: min-content;
   min-width: 100%;
+}
+
+.labelStyle {
+  width: 100%;
 }

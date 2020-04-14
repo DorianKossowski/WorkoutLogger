@@ -6,12 +6,15 @@ public class ExerciseDto {
     private long id;
     private String name;
 
+    public ExerciseDto() {
+    }
+
     public ExerciseDto(Exercise exercise) {
         this.id = exercise.getId();
         this.name = exercise.getName();
     }
 
-    public long  getId() {
+    public long getId() {
         return id;
     }
 

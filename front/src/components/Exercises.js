@@ -16,8 +16,20 @@ class Exercises extends Component {
     }
 
     componentDidMount() {
+        this.getExercises();
+    }
+    
+    componentDidUpdate() {
+        const refresh = 'refresh';
+        if(typeof this.props.location.state !== 'undefined' && this.props.location.state.hasOwnProperty(refresh)) {
+            delete this.props.location.state;
+            this.getExercises();
+        }
+    }
+
+    getExercises() {
         this.setState({ loading: true });
-        this.setState({ errMsg: '' })
+        this.setState({ errMsg: '' });
         api({
             method: 'GET',
             url: 'exercises'
@@ -30,7 +42,7 @@ class Exercises extends Component {
     getExercisesRender() {
         const mainContent = this.state.exercises.length === 0 ? 
             <div><p>Lack of exercises in database</p></div> :
-            <GenericTable header={['Name']} rows={this.state.exercises} link={'/exercises/'}/>;
+            <GenericTable header={['Name']} rows={this.state.exercises}/>;
         return (
             <>
                 {mainContent}

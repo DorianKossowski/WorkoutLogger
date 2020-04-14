@@ -22,6 +22,7 @@ const request = (options) => {
             // Something else happened while setting up the request
             // triggered the error
             console.error('Error Message:', error.message);
+            sessionStorage.clear();
         }
 
         return Promise.reject(error.response || error.message);
