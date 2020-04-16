@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import './index.css';
 
-import LoginComponent from './components/LoginComponent';
-import SignUpComponent from './components/SignUpComponent';
+import LoginComponent from './components/auth/LoginComponent';
+import SignUpComponent from './components/auth/SignUpComponent';
 import AuthorizedViewContainer from './containers/AuthorizedViewContainer';
 import AuthenticatedRoute from './helpers/auth/AuthenticatedRoute';
 

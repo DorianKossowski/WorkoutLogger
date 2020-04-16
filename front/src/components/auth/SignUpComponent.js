@@ -3,9 +3,9 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 
-import api from '../helpers/Api';
-import ErrorAlert from './helpers/ErrorAlert';
-import handleError from '../helpers/ErrorHandlingService';
+import api from '../../helpers/Api';
+import ErrorAlert from '../helpers/ErrorAlert';
+import handleError from '../../helpers/ErrorHandlingService';
 
 class SignUpCompnent extends Component {
 

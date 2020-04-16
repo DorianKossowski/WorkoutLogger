@@ -3,7 +3,7 @@ import { Switch } from "react-router-dom";
 
 import './mainViewContainer.css'
 import Exercises from '../components/Exercises';
-import LogoutComponent from '../components/LogoutComponent';
+import LogoutComponent from '../components/auth/LogoutComponent';
 import AuthenticatedRoute from '../helpers/auth/AuthenticatedRoute';
 
 class MainViewContainer extends Component {
