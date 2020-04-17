@@ -1,0 +1,28 @@
+.workoutPanelWrapper {
+    border: 2px solid #dee2e6;
+    margin: 10px;
+}
+
+.workoutPanelHeader {
+    background: #e9ecef;
+    text-align: left;
+    padding-left: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #495057;
+}
+
+.workoutPanelContent {
+    background: #343a40;
+    display: flex;
+    padding: 10px 0;
+    color: #e9ecef;
+}
+
+.workoutPanelContentFirst {
+    min-width: 50%;
+}
+
+.workoutPanelContentOthers {
+    margin: 0 auto;
+}

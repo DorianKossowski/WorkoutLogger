@@ -19,7 +19,7 @@ class AuthorizedViewContainer extends Component {
                     <Nav className='mr-auto'>
                         <LinkContainer to='/'><Nav.Link>Home</Nav.Link></LinkContainer>
                         <LinkContainer to='/exercises'><Nav.Link>Exercises</Nav.Link></LinkContainer>
-                        <LinkContainer to='/workout'><Nav.Link>Workout</Nav.Link></LinkContainer>
+                        <LinkContainer to='/workouts'><Nav.Link>Workouts</Nav.Link></LinkContainer>
                     </Nav>
                     <Nav>
                         <NavDropdown title={"Hello " + AuthenticationService.getAuthenticatedUser()}  id="basic-nav-dropdown">

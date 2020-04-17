@@ -124,3 +124,7 @@ P {
 .labelStyle {
   width: 100%;
 }
+
+.checkBoxStyle {
+  margin-right: 10px;
+}

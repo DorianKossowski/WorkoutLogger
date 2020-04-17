@@ -24,7 +24,6 @@ public class ExercisesController {
 
     @PostMapping("/addExercise")
     public ExerciseDto addExercise(@RequestBody ExerciseDto exerciseDto) {
-        exerciseService.createExercise(exerciseDto);
-        return exerciseDto;
+        return exerciseService.createExercise(exerciseDto);
     }
 }
