@@ -34,7 +34,7 @@ class AuthenticationService {
             method: 'POST',
             url: 'basicLogout'
         })
-        .then(() => {
+        .finally(() => {
             sessionStorage.clear();
         })
     }
