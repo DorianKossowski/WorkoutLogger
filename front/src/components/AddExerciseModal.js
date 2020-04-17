@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap/';
 import { Formik,  Field, ErrorMessage } from 'formik';
-import { Redirect } from 'react-router-dom';
 
 import api from '../helpers/Api';
 import ErrorAlert from './helpers/ErrorAlert';
@@ -12,11 +11,10 @@ class AddExerciseModal extends Component {
 
     state = {
         show: false,
-        redirect: false,
         errMsg: ''
     }
     
-    handleShow = () => this.setState({ errMsg: '', redirect: false, show: true });
+    handleShow = () => this.setState({ errMsg: '', show: true });
     handleClose = () => this.setState({ show: false });
 
     render() {
@@ -27,7 +25,7 @@ class AddExerciseModal extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title>Add exercise</Modal.Title>
                 </Modal.Header>
-                {this.state.redirect ? <Redirect to={{ path: '/exercises', state: { refresh: true } }}/> : this.getCreationForm()}
+                { this.getCreationForm() }
             </Modal>
             </>
         );
@@ -86,7 +84,7 @@ class AddExerciseModal extends Component {
             })
             .then(() => {
                 this.handleClose();
-                this.setState({ redirect: true });
+                this.props.postAction();
             }).catch((error) => {
                 this.setState({ errMsg: handleError(error, 'Creation failed: ') });
                 actions.setSubmitting(false);

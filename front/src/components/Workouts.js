@@ -19,16 +19,8 @@ class Workouts extends Component {
     componentDidMount() {
         this.getWorkoutsWithExcercises();
     }
-    
-    componentDidUpdate() {
-        const refresh = 'refresh';
-        if(typeof this.props.location.state !== 'undefined' && this.props.location.state.hasOwnProperty(refresh)) {
-            delete this.props.location.state;
-            this.getWorkoutsWithExcercises();
-        }
-    }
 
-    getWorkoutsWithExcercises() {
+    getWorkoutsWithExcercises = () => {
         this.setState({ loading: true });
         this.setState({ errMsg: '' });
         api({
@@ -47,7 +39,7 @@ class Workouts extends Component {
         return (
             <>
                 {mainContent}
-                Want more? <AddWorkoutModal exercises={ this.state.exercises }/>
+                Want more? <AddWorkoutModal postAction={ this.getWorkoutsWithExcercises } exercises={ this.state.exercises }/>
             </>
         );
     }
