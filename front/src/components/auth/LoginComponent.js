@@ -65,7 +65,7 @@ class LoginComponent extends Component {
                     validate={this.validateFields()} 
                     onSubmit={this.handleSubmit()}
                 >
-                    {({ isSubmitting, isValid }) => (<Form>
+                    {({ isSubmitting }) => (<Form>
                         <div className='formGroupStyle'>
                             <h6>Username</h6>
                             <Field className='form-control' name="username" type="text" placeholder="username"/>
@@ -77,7 +77,7 @@ class LoginComponent extends Component {
                             <ErrorMessage className='errorMsgStyle' name="password" component="div"/>
                         </div>
                         <div className='forgotPasswordTextStyle'><a>Forgot your password?</a></div>
-                        <Button type="submit" disabled={isSubmitting || !isValid}>Submit</Button>
+                        <Button type="submit" disabled={isSubmitting}>Submit</Button>
                     </Form>)}
                 </Formik>
             </div>

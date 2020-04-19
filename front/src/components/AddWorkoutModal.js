@@ -51,7 +51,6 @@ class AddWorkoutModal extends Component {
                             <Form.Label className='labelStyle'>Name</Form.Label>
                             <Form.Control name="name" type="text" placeholder="Workout name" 
                                 value={field.value} onChange={field.onChange}/>
-                            <div className='errorMsgStyle'>{errors.name}</div>
                             <ErrorMessage className='errorMsgStyle' name="name" component="div"/>
                             </>
                         )}
@@ -59,11 +58,10 @@ class AddWorkoutModal extends Component {
                         <Form.Label className='labelStyle'>Exercises</Form.Label>
                         { this.props.exercises.map(exercise => <Checkbox key={exercise.id} name='exercisesId' 
                             value={exercise.name} id={exercise.id}/>) }
-                        <div className='errorMsgStyle'>{errors.exercisesId}</div>
                         <ErrorMessage className='errorMsgStyle' name="exercisesId" component="div"/>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button type='submit' onClick={handleSubmit} disabled={isSubmitting || !isValid}>Create</Button>
+                        <Button type='submit' onClick={handleSubmit} disabled={isSubmitting}>Create</Button>
                     </Modal.Footer>
                 </Form>
             )}

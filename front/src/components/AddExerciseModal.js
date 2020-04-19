@@ -49,13 +49,12 @@ class AddExerciseModal extends Component {
                             <Form.Label className='labelStyle'>Name</Form.Label>
                             <Form.Control name="name" type="text" placeholder="Exercise name" 
                                 value={field.value} onChange={field.onChange}/>
-                            <div className='errorMsgStyle'>{errors.name}</div>
                             <ErrorMessage className='errorMsgStyle' name="name" component="div"/>
                         </Modal.Body>
                     )}
                     </Field>
                     <Modal.Footer>
-                        <Button type='submit' onClick={handleSubmit} disabled={isSubmitting || !isValid}>Create</Button>
+                        <Button type='submit' onClick={handleSubmit} disabled={isSubmitting}>Create</Button>
                     </Modal.Footer>
                 </Form>
             )}
