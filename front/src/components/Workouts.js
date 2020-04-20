@@ -5,6 +5,7 @@ import OvalLoader from './helpers/OvalLoader';
 import ErrorAlert from './helpers/ErrorAlert';
 import AddWorkoutModal from './AddWorkoutModal.js';
 import WorkoutPanel from './helpers/WorkoutPanel';
+import handleError from '../helpers/ErrorHandlingService';
 
 class Workouts extends Component {
     
@@ -28,7 +29,7 @@ class Workouts extends Component {
             url: 'workouts'
         })
         .then(data => this.setState({ workouts: data.workouts, exercises: data.exercises }))
-        .catch(error => this.setState({ errMsg: error }))
+        .catch(error => this.setState({ errMsg: handleError(error, 'Error during getting workouts: ') }))
         .finally(() => this.setState({ loading: false }));
     }
 

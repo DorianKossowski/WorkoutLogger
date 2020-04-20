@@ -5,6 +5,7 @@ import GenericTable from './genericTable/GenericTable';
 import AddExerciseModal from './AddExerciseModal';
 import OvalLoader from './helpers/OvalLoader';
 import ErrorAlert from './helpers/ErrorAlert';
+import handleError from '../helpers/ErrorHandlingService';
 
 class Exercises extends Component {
     
@@ -27,7 +28,7 @@ class Exercises extends Component {
             url: 'exercises'
         })
         .then(data => this.setState({ exercises: data }))
-        .catch(error => this.setState({ errMsg: error }))
+        .catch(error => this.setState({ errMsg: handleError(error, 'Error during getting exercises: ') }))
         .finally(() => this.setState({ loading: false }));
     }
 

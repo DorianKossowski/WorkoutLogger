@@ -3,6 +3,7 @@ import {Navbar, Nav, NavDropdown} from 'react-bootstrap/';
 import { LinkContainer } from "react-router-bootstrap";
 
 import './mainViewContainer.css'
+
 import AuthenticationService from '../helpers/auth/AuthenticationService';
 import MainViewContainer from './MainViewContainer';
 

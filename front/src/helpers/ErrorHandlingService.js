@@ -1,5 +1,8 @@
 const handle = (error, msg) => {
     if (error.data) {
+        if(error.status === 401) {
+            sessionStorage.clear();
+        }
         if(error.status === 500) {
             return msg + 'Interal error'
         }
