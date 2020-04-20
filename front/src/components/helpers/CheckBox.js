@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Field } from "formik";
 
+import './checkBoxStyle.css';
+
 class Checkbox extends Component {
 
     render() {

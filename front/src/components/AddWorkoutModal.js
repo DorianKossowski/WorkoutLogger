@@ -5,7 +5,7 @@ import { Formik,  Field, ErrorMessage } from 'formik';
 import api from '../helpers/Api';
 import ErrorAlert from './helpers/ErrorAlert';
 import handleError from '../helpers/ErrorHandlingService';
-import Checkbox from './helpers/Checkbox';
+import CheckBox from './helpers/CheckBox';
 
 
 class AddWorkoutModal extends Component {
@@ -56,7 +56,7 @@ class AddWorkoutModal extends Component {
                         )}
                         </Field>
                         <Form.Label className='labelStyle'>Exercises</Form.Label>
-                        { this.props.exercises.map(exercise => <Checkbox key={exercise.id} name='exercisesId' 
+                        { this.props.exercises.map(exercise => <CheckBox key={exercise.id} name='exercisesId' 
                             value={exercise.name} id={exercise.id}/>) }
                         <ErrorMessage className='errorMsgStyle' name="exercisesId" component="div"/>
                     </Modal.Body>

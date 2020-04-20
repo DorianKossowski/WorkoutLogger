@@ -72,59 +72,10 @@ P {
   margin-left: 20px;
 }
 
-.authFormStyle {
-  width: max-content;
-  border: #343a40 solid;
-  margin: 20px auto;
-}
-
-.authFormLogoStyle {
-  background: #343a40;
-  color: #f4f4f4;
-  padding: 20px 10px;
-}
-
-.authFormStyle h1 {
-  border-bottom: 2px solid #f4f4f4;
-}
-
-.authFormContentStyle {
-  padding: 20px;
-}
-
 .dropdown-menu {
   min-width: 0 !important;
 }
 
-.forgotPasswordTextStyle {
-  text-align: right;
-  margin: 10px;
-}
-
-.dontHaveAccountStyle {
-  padding: 5px;
-  background: #6a70773d;
-  border-top: 2px solid #6a7077;
-}
-
-.authFormStyle a {
-  color: #494949!important;
-  text-decoration: none!important;
-}
-
-.authFormStyle a:hover {
-  color: #a4a6a8!important;
-}
-
-.errorAlertStyle {
-  width: min-content;
-  min-width: 100%;
-}
-
 .labelStyle {
   width: 100%;
-}
-
-.checkBoxStyle {
-  margin-right: 10px;
 }
