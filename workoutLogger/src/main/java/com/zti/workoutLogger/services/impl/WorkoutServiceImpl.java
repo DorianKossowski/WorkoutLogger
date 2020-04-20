@@ -5,7 +5,6 @@ import com.zti.workoutLogger.models.dto.WorkoutDto;
 import com.zti.workoutLogger.repositories.ExerciseRepository;
 import com.zti.workoutLogger.repositories.WorkoutRepository;
 import com.zti.workoutLogger.services.WorkoutService;
-import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
 import com.zti.workoutLogger.utils.exceptions.InvalidArgumentExceptions;
 import org.slf4j.Logger;
@@ -20,8 +19,6 @@ import java.util.stream.Collectors;
 public class WorkoutServiceImpl implements WorkoutService {
     private static final Logger logger = LoggerFactory.getLogger(WorkoutServiceImpl.class);
 
-    @Autowired
-    private AuthenticatedUserGetter userGetter;
     @Autowired
     private WorkoutRepository workoutRepository;
     @Autowired

@@ -4,6 +4,7 @@ import com.zti.workoutLogger.models.Exercise;
 import com.zti.workoutLogger.models.Workout;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class WorkoutDto {
     private long id;
@@ -14,10 +15,16 @@ public class WorkoutDto {
     public WorkoutDto() {
     }
 
+    public WorkoutDto(String name, Set<Long> exercisesId) {
+        this.name = name;
+        this.exercisesId = exercisesId;
+    }
+
     public WorkoutDto(Workout workout) {
         this.id = workout.getId();
         this.name = workout.getName();
         this.exercises = workout.getExercises();
+        this.exercisesId = workout.getExercises().stream().map(Exercise::getId).collect(Collectors.toSet());
     }
 
     public long getId() {

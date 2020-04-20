@@ -13,7 +13,7 @@ public class Workout {
     @Column
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "workoutExercise",
             joinColumns = {@JoinColumn(name = "workoutId")},

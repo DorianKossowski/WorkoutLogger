@@ -9,6 +9,10 @@ public class ExerciseDto {
     public ExerciseDto() {
     }
 
+    public ExerciseDto(String name) {
+        this.name = name;
+    }
+
     public ExerciseDto(Exercise exercise) {
         this.id = exercise.getId();
         this.name = exercise.getName();
