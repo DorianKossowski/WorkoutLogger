@@ -14,15 +14,20 @@
 
 .workoutPanelContent {
     background: #343a40;
-    display: flex;
-    padding: 10px 0;
     color: #e9ecef;
 }
 
-.workoutPanelContentFirst {
-    min-width: 50%;
+.workoutPanelContentSimple {
+    padding: 10px 0;
 }
 
-.workoutPanelContentOthers {
-    margin: 0 auto;
+.workoutPanelContentTrain {
+    padding: 10px 0;
+    background: #1a1c1f;
+    border-right: 2px solid #0f1011;
+}
+
+.workoutPanelContentStats {
+    padding: 10px 0;
+    background: #1a1c1f;
 }

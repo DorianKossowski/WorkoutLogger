@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 
 import './workoutPanelStyle.css';
 
@@ -6,22 +7,22 @@ class WorkoutPanel extends Component {
 
     render() {
         return (
-            <div className='workoutPanelWrapper'>
-                <div className='workoutPanelHeader'>
+            <Container fluid className='workoutPanelWrapper'>
+                <Row className='workoutPanelHeader'>
                     { this.props.data.name }
-                </div>
-                <div className='workoutPanelContent'>
-                    <div className='workoutPanelContentFirst'>{ this.getExercises(this.props.data.exercises) }</div>
-                    <div className='workoutPanelContentOthers'>Last: placeholder</div>
-                    <div className='workoutPanelContentOthers'>Train</div>
-                    <div className='workoutPanelContentOthers'>Stats</div>
-                </div>
-            </div>
+                </Row>
+                <Row className='workoutPanelContent'>
+                    <Col lg className='workoutPanelContentSimple'>{ this.getExercises(this.props.data.exercises) }</Col>
+                    <Col xs lg='2' className='workoutPanelContentSimple'>placeholder</Col>
+                    <Col xs lg='2' className='workoutPanelContentTrain'>Train</Col>
+                    <Col xs lg='2' className='workoutPanelContentStats'>Stats</Col>
+                </Row>
+            </Container>
         );
     }
 
     getExercises(exrcsObjects) {
-        return Object.values(exrcsObjects).map(obj => obj.name).join(",");
+        return Object.values(exrcsObjects).map(obj => obj.name).join(", ");
     }
 }
 
