@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 public class SignUpController {
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @PostMapping("/signup")
     public UserDto signUpUser(@RequestBody UserDto user) {
