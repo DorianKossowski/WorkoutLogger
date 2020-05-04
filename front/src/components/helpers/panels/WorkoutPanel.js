@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
-import './workoutPanelStyle.css';
+import './panelStyle.css';
 
 class WorkoutPanel extends Component {
 
@@ -15,7 +15,7 @@ class WorkoutPanel extends Component {
                     <Col lg className='workoutPanelContentSimple'>{ this.getExercises(this.props.data.exercises) }</Col>
                     <Col xs lg='2' className='workoutPanelContentSimple'>placeholder</Col>
                     <Col xs lg='2' className='workoutPanelContentTrain'>Train</Col>
-                    <Col xs lg='2' className='workoutPanelContentStats'>Stats</Col>
+                    <Col xs lg='2' className='workoutPanelContentStats'>Manage</Col>
                 </Row>
             </Container>
         );

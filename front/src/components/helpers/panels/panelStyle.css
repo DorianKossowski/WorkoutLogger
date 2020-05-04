@@ -7,7 +7,7 @@
     background: #e9ecef;
     text-align: left;
     padding-left: 10px;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: bold;
     color: #495057;
 }
@@ -30,4 +30,10 @@
 .workoutPanelContentStats {
     padding: 10px 0;
     background: #1a1c1f;
+}
+
+.clickableCol {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
 }

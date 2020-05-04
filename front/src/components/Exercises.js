@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import api from '../helpers/Api.js';
-import GenericTable from './genericTable/GenericTable';
+import ExercisePanel from './helpers/panels/ExercisePanel';
 import AddExerciseModal from './AddExerciseModal';
 import OvalLoader from './helpers/OvalLoader';
 import ErrorAlert from './helpers/ErrorAlert';
@@ -35,7 +35,7 @@ class Exercises extends Component {
     getExercisesRender() {
         const mainContent = this.state.exercises.length === 0 ? 
             <div><p>Lack of exercises in database</p></div> :
-            <GenericTable header={['Name']} rows={this.state.exercises}/>;
+            this.state.exercises.map(exercise => <ExercisePanel key={ exercise.id } data={ exercise }/>);
         return (
             <>
                 {mainContent}

@@ -4,7 +4,7 @@ import api from '../helpers/Api.js';
 import OvalLoader from './helpers/OvalLoader';
 import ErrorAlert from './helpers/ErrorAlert';
 import AddWorkoutModal from './AddWorkoutModal.js';
-import WorkoutPanel from './helpers/WorkoutPanel';
+import WorkoutPanel from './helpers/panels/WorkoutPanel';
 import handleError from '../helpers/ErrorHandlingService';
 
 class Workouts extends Component {

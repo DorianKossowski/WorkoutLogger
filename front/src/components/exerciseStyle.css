@@ -1,0 +1,19 @@
+.exerciseHeader {
+    display: flow-root;
+    border: 2px solid #dee2e6;
+    margin: 10px;
+    background: #e9ecef;
+    text-align: left;
+    padding: 0 10px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #495057;
+}
+
+.exerciseHeaderLeft {
+    float: left;
+}
+
+.exerciseHeaderRight {
+    float: right;
+}
