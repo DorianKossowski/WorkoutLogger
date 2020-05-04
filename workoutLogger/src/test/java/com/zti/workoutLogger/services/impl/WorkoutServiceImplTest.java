@@ -14,7 +14,7 @@ import com.zti.workoutLogger.services.WorkoutLoggerServiceTests;
 import com.zti.workoutLogger.services.WorkoutService;
 import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
-import com.zti.workoutLogger.utils.exceptions.InvalidArgumentExceptions;
+import com.zti.workoutLogger.utils.exceptions.InvalidArgumentException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -109,9 +109,9 @@ class WorkoutServiceImplTest extends WorkoutLoggerServiceTests {
         return Stream.of(
                 Arguments.of(new WorkoutDto(WORKOUT_NAME, Collections.singleton(1L)), AlreadyExistsException.class,
                         WORKOUT_NAME + " already exists"),
-                Arguments.of(new WorkoutDto("", Collections.singleton(1L)), InvalidArgumentExceptions.class,
+                Arguments.of(new WorkoutDto("", Collections.singleton(1L)), InvalidArgumentException.class,
                         "Name cannot be empty"),
-                Arguments.of(new WorkoutDto(WORKOUT_NAME, Collections.emptySet()), InvalidArgumentExceptions.class,
+                Arguments.of(new WorkoutDto(WORKOUT_NAME, Collections.emptySet()), InvalidArgumentException.class,
                         "Select at least one exercise")
         );
     }

@@ -6,12 +6,13 @@ import com.zti.workoutLogger.repositories.ExerciseRepository;
 import com.zti.workoutLogger.repositories.WorkoutRepository;
 import com.zti.workoutLogger.services.WorkoutService;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
-import com.zti.workoutLogger.utils.exceptions.InvalidArgumentExceptions;
+import com.zti.workoutLogger.utils.exceptions.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,16 +29,17 @@ public class WorkoutServiceImpl implements WorkoutService {
     public List<WorkoutDto> getAllWorkoutsByUserId(long userId) {
         return workoutRepository.findAllByUserId(userId).stream()
                 .map(WorkoutDto::new)
+                .sorted(Comparator.comparing(WorkoutDto::getName))
                 .collect(Collectors.toList());
     }
 
     @Override
     public WorkoutDto createWorkout(WorkoutDto workoutDto) {
         if (workoutDto.getName().isEmpty()) {
-            throw new InvalidArgumentExceptions("Name cannot be empty");
+            throw new InvalidArgumentException("Name cannot be empty");
         }
         if (workoutDto.getExercisesId().isEmpty()) {
-            throw new InvalidArgumentExceptions("Select at least one exercise");
+            throw new InvalidArgumentException("Select at least one exercise");
         }
         if (workoutRepository.existsByName(workoutDto.getName())) {
             throw new AlreadyExistsException(workoutDto.getName());

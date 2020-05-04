@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
-public class InvalidArgumentExceptions extends RuntimeException {
+public class InvalidArgumentException extends RuntimeException {
 
-    public InvalidArgumentExceptions(String content) {
+    public InvalidArgumentException(String content) {
         super(content);
     }
 }

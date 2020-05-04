@@ -6,7 +6,7 @@ import com.zti.workoutLogger.repositories.UserRepository;
 import com.zti.workoutLogger.services.UserService;
 import com.zti.workoutLogger.services.WorkoutLoggerServiceTests;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
-import com.zti.workoutLogger.utils.exceptions.InvalidArgumentExceptions;
+import com.zti.workoutLogger.utils.exceptions.InvalidArgumentException;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -71,7 +71,7 @@ class UserServiceImplTest extends WorkoutLoggerServiceTests {
                         MAIL + " already exists"),
                 Arguments.of(new UserDto("newMail", USERNAME, PASSWORD, PASSWORD), AlreadyExistsException.class,
                         USERNAME + " already exists"),
-                Arguments.of(new UserDto(MAIL, USERNAME, PASSWORD, "wrongPass"), InvalidArgumentExceptions.class,
+                Arguments.of(new UserDto(MAIL, USERNAME, PASSWORD, "wrongPass"), InvalidArgumentException.class,
                         "Provided passwords are different")
         );
     }

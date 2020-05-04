@@ -3,7 +3,7 @@ package com.zti.workoutLogger.controllers;
 import com.zti.workoutLogger.models.dto.UserDto;
 import com.zti.workoutLogger.services.UserService;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
-import com.zti.workoutLogger.utils.exceptions.InvalidArgumentExceptions;
+import com.zti.workoutLogger.utils.exceptions.InvalidArgumentException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -53,7 +53,7 @@ class SignUpControllerTest extends WorkoutLoggerControllerTest {
 
     private static Stream<Arguments> provide409Exceptions() {
         return Stream.of(
-                Arguments.of(new InvalidArgumentExceptions("")),
+                Arguments.of(new InvalidArgumentException("")),
                 Arguments.of(new AlreadyExistsException(""))
         );
     }

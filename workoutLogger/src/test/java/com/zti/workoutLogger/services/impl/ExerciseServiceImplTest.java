@@ -11,7 +11,8 @@ import com.zti.workoutLogger.services.UserService;
 import com.zti.workoutLogger.services.WorkoutLoggerServiceTests;
 import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
-import com.zti.workoutLogger.utils.exceptions.InvalidArgumentExceptions;
+import com.zti.workoutLogger.utils.exceptions.ForbiddenException;
+import com.zti.workoutLogger.utils.exceptions.InvalidArgumentException;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ExerciseServiceImplTest extends WorkoutLoggerServiceTests {
     private static final String NAME = "exerciseName";
@@ -91,7 +92,7 @@ class ExerciseServiceImplTest extends WorkoutLoggerServiceTests {
     private static Stream<Arguments> provideExercisesDtoWithException() {
         return Stream.of(
                 Arguments.of(new ExerciseDto(NAME), AlreadyExistsException.class, NAME + " already exists"),
-                Arguments.of(new ExerciseDto(""), InvalidArgumentExceptions.class, "Name cannot be empty")
+                Arguments.of(new ExerciseDto(""), InvalidArgumentException.class, "Name cannot be empty")
         );
     }
 
@@ -132,5 +133,56 @@ class ExerciseServiceImplTest extends WorkoutLoggerServiceTests {
                 () -> assertThat(userExercises).extracting(ExerciseDto::getName)
                         .containsExactly(NAME)
         );
+    }
+
+    @Test
+    void shouldGetExercisesById() {
+        long newExerciseId = exerciseService.createExercise(new ExerciseDto(NAME)).getId();
+
+        ExerciseDto exerciseDto = exerciseService.getExerciseById(newExerciseId);
+
+        assertThat(exerciseDto.getName()).isEqualTo(NAME);
+    }
+
+    @Test
+    void shouldThrowWhenWrongId() {
+        assertThatThrownBy(() -> exerciseService.getExerciseById(-1))
+                .isExactlyInstanceOf(InvalidArgumentException.class)
+                .hasMessage("Exercise doesn't exist");
+    }
+
+    @Test
+    void shouldThrowWhenWrongUserId() {
+        when(authenticatedUserGetter.get()).thenReturn(initUser1, initUser2);
+        long newExerciseId = exerciseService.createExercise(new ExerciseDto(NAME)).getId();
+
+        assertThatThrownBy(() -> exerciseService.getExerciseById(newExerciseId)).isExactlyInstanceOf(ForbiddenException.class);
+        verify(authenticatedUserGetter, times(2)).get();
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideEditedName")
+    void shouldEditExercise(String editedName) {
+        long newExerciseId = exerciseService.createExercise(new ExerciseDto(NAME)).getId();
+
+        ExerciseDto exerciseDto = exerciseService.editExercise(new ExerciseDto(editedName), newExerciseId);
+
+        assertAll(
+                () -> assertThat(exerciseDto.getId()).isEqualTo(newExerciseId),
+                () -> assertThat(exerciseDto.getName()).isEqualTo(editedName)
+        );
+    }
+
+    private static Stream<Arguments> provideEditedName() {
+        return Stream.of(Arguments.of(NAME), Arguments.of("editedName"));
+    }
+
+    @Test
+    void shouldThrowWhenWrongEditedName() {
+        long newExerciseId = exerciseService.createExercise(new ExerciseDto(NAME)).getId();
+
+        assertThatThrownBy(() -> exerciseService.editExercise(new ExerciseDto(""), newExerciseId))
+                .isExactlyInstanceOf(InvalidArgumentException.class)
+                .hasMessage("Name cannot be empty");
     }
 }

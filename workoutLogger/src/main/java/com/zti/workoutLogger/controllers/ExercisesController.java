@@ -17,12 +17,22 @@ public class ExercisesController {
     private ExerciseService exerciseService;
 
     @GetMapping("/exercises")
-    public List<ExerciseDto> showCoachesList() {
+    public List<ExerciseDto> getExercises() {
         return exerciseService.getAllExercisesByUserId(userGetter.get().getId());
+    }
+
+    @GetMapping("/exercises/{id}")
+    public ExerciseDto getExercise(@PathVariable long id) {
+        return exerciseService.getExerciseById(id);
     }
 
     @PostMapping("/addExercise")
     public ExerciseDto addExercise(@RequestBody ExerciseDto exerciseDto) {
         return exerciseService.createExercise(exerciseDto);
+    }
+
+    @PutMapping("/exercises/edit/{id}")
+    public ExerciseDto editExercise(@RequestBody ExerciseDto exerciseDto, @PathVariable long id) {
+        return exerciseService.editExercise(exerciseDto, id);
     }
 }

@@ -5,7 +5,7 @@ import com.zti.workoutLogger.models.dto.UserDto;
 import com.zti.workoutLogger.repositories.UserRepository;
 import com.zti.workoutLogger.services.UserService;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
-import com.zti.workoutLogger.utils.exceptions.InvalidArgumentExceptions;
+import com.zti.workoutLogger.utils.exceptions.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserDto newUserDto) {
         if (!newUserDto.getPassword().equals(newUserDto.getRepPassword())) {
-            throw new InvalidArgumentExceptions("Provided passwords are different");
+            throw new InvalidArgumentException("Provided passwords are different");
         }
         if (userRepository.existsByMail(newUserDto.getMail())) {
             throw new AlreadyExistsException(newUserDto.getMail());

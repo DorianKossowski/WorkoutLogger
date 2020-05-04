@@ -9,7 +9,7 @@ import com.zti.workoutLogger.services.ExerciseService;
 import com.zti.workoutLogger.services.WorkoutService;
 import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
-import com.zti.workoutLogger.utils.exceptions.InvalidArgumentExceptions;
+import com.zti.workoutLogger.utils.exceptions.InvalidArgumentException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -118,7 +118,7 @@ class WorkoutsControllerTest extends WorkoutLoggerControllerTest {
 
     private static Stream<Arguments> provide409Exceptions() {
         return Stream.of(
-                Arguments.of(new InvalidArgumentExceptions("")),
+                Arguments.of(new InvalidArgumentException("")),
                 Arguments.of(new AlreadyExistsException(""))
         );
     }

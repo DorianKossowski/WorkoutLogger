@@ -9,4 +9,8 @@ public interface ExerciseService {
     List<ExerciseDto> getAllExercisesByUserId(long userId);
 
     ExerciseDto createExercise(ExerciseDto newExerciseDto);
+
+    ExerciseDto getExerciseById(long id);
+
+    ExerciseDto editExercise(ExerciseDto exerciseDto, long id);
 }

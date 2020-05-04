@@ -6,7 +6,7 @@ import com.zti.workoutLogger.models.dto.ExerciseDto;
 import com.zti.workoutLogger.services.ExerciseService;
 import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
-import com.zti.workoutLogger.utils.exceptions.InvalidArgumentExceptions;
+import com.zti.workoutLogger.utils.exceptions.InvalidArgumentException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,9 +23,9 @@ import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -105,8 +105,44 @@ class ExercisesControllerTest extends WorkoutLoggerControllerTest {
 
     private static Stream<Arguments> provide409Exceptions() {
         return Stream.of(
-                Arguments.of(new InvalidArgumentExceptions("")),
+                Arguments.of(new InvalidArgumentException("")),
                 Arguments.of(new AlreadyExistsException(""))
         );
+    }
+
+    @Test
+    void shouldReturnJsonWithCorrectExercise() throws Exception {
+        Exercise exercise = new Exercise();
+        exercise.setId(2L);
+        exercise.setUser(INIT_USER);
+        exercise.setName("name");
+
+        ExerciseDto result = new ExerciseDto(exercise);
+        when(exerciseService.getExerciseById(anyLong())).thenReturn(result);
+
+        mvc.perform(get("/exercises/2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(result)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(exercise.getId()))
+                .andExpect(jsonPath("$.name").value(exercise.getName()));
+    }
+
+    @Test
+    void shouldReturnJsonWithIdAndUpdatedName() throws Exception {
+        Exercise exercise = new Exercise();
+        exercise.setId(2L);
+        exercise.setUser(INIT_USER);
+        exercise.setName("name");
+
+        ExerciseDto result = new ExerciseDto(exercise);
+        when(exerciseService.editExercise(any(), anyLong())).thenReturn(result);
+
+        mvc.perform(put("/exercises/edit/2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(result)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(exercise.getId()))
+                .andExpect(jsonPath("$.name").value(exercise.getName()));
     }
 }
