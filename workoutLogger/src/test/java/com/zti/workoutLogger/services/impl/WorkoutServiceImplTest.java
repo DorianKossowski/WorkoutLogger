@@ -14,6 +14,7 @@ import com.zti.workoutLogger.services.WorkoutLoggerServiceTests;
 import com.zti.workoutLogger.services.WorkoutService;
 import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
+import com.zti.workoutLogger.utils.exceptions.ForbiddenException;
 import com.zti.workoutLogger.utils.exceptions.InvalidArgumentException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class WorkoutServiceImplTest extends WorkoutLoggerServiceTests {
     private static final String EXERCISE_NAME = "exerciseName";
@@ -161,5 +162,36 @@ class WorkoutServiceImplTest extends WorkoutLoggerServiceTests {
                 () -> assertThat(userWorkouts).extracting(WorkoutDto::getName)
                         .containsExactly(WORKOUT_NAME)
         );
+    }
+
+    @Test
+    void shouldGetWorkoutById() {
+        long newWorkoutId = getNewWorkoutId(WORKOUT_NAME);
+
+        WorkoutDto workoutDtoById = workoutService.getWorkoutById(newWorkoutId);
+
+        assertThat(workoutDtoById.getName()).isEqualTo(WORKOUT_NAME);
+    }
+
+    private long getNewWorkoutId(String workoutName) {
+        WorkoutDto dto = new WorkoutDto(workoutName, new HashSet<>(Collections.singletonList(exercise1.getId())));
+        return workoutService.createWorkout(dto).getId();
+    }
+
+    @Test
+    void shouldThrowWhenWrongId() {
+        assertThatThrownBy(() -> workoutService.getWorkoutById(-1))
+                .isExactlyInstanceOf(InvalidArgumentException.class)
+                .hasMessage("Workout doesn't exist");
+    }
+
+    @Test
+    void shouldThrowWhenWrongUserId() {
+        reset(authenticatedUserGetter);
+        when(authenticatedUserGetter.get()).thenReturn(initUser2);
+        long newWorkoutId = getNewWorkoutId(WORKOUT_NAME);
+
+        assertThatThrownBy(() -> workoutService.getWorkoutById(newWorkoutId)).isExactlyInstanceOf(ForbiddenException.class);
+        verify(authenticatedUserGetter, times(1)).get();
     }
 }

@@ -23,15 +23,25 @@ public class WorkoutsController {
     private ExerciseService exerciseService;
 
     @GetMapping("/workouts")
-    public WorkoutsWithExercisesDto showCoachesList(Authentication authentication) {
+    public WorkoutsWithExercisesDto showWorkoutList(Authentication authentication) {
         long userId = userGetter.get().getId();
         List<ExerciseDto> exercises = exerciseService.getAllExercisesByUserId(userId);
         List<WorkoutDto> workouts = workoutService.getAllWorkoutsByUserId(userId);
         return new WorkoutsWithExercisesDto(workouts, exercises);
     }
 
+    @GetMapping("/workouts/{id}")
+    public WorkoutDto getWorkout(@PathVariable long id) {
+        return workoutService.getWorkoutById(id);
+    }
+
     @PostMapping("/addWorkout")
-    public WorkoutDto addExercise(@RequestBody WorkoutDto workoutDto) {
+    public WorkoutDto addWorkout(@RequestBody WorkoutDto workoutDto) {
         return workoutService.createWorkout(workoutDto);
+    }
+
+    @PutMapping("/workouts/edit/{id}")
+    public WorkoutDto editWorkout(@RequestBody WorkoutDto workoutDto, @PathVariable long id) {
+        return workoutService.editWorkout(workoutDto, id);
     }
 }

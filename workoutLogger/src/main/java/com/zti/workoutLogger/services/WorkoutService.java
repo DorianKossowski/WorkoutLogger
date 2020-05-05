@@ -9,4 +9,8 @@ public interface WorkoutService {
     List<WorkoutDto> getAllWorkoutsByUserId(long userId);
 
     WorkoutDto createWorkout(WorkoutDto workoutDto);
+
+    WorkoutDto getWorkoutById(long id);
+
+    WorkoutDto editWorkout(WorkoutDto workoutDto, long id);
 }

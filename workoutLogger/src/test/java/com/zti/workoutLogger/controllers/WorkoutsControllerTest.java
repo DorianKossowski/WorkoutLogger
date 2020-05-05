@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -86,19 +87,15 @@ class WorkoutsControllerTest extends WorkoutLoggerControllerTest {
 
     @Test
     void shouldReturnCorrectJson() throws Exception {
-        Workout workout = new Workout();
-        workout.setId(4L);
-        workout.setName("workoutName");
-        workout.setExercises(Collections.singleton(EXERCISE_1));
-        WorkoutDto result = new WorkoutDto(workout);
-        when(workoutService.createWorkout(any())).thenReturn(result);
+        WorkoutDto workoutDto = getWorkoutDto(EXERCISE_1);
+        when(workoutService.createWorkout(any())).thenReturn(workoutDto);
 
         mvc.perform(post("/addWorkout")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(result)))
+                .content(asJsonString(workoutDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(workout.getId()))
-                .andExpect(jsonPath("$.name").value(workout.getName()))
+                .andExpect(jsonPath("$.id").value(workoutDto.getId()))
+                .andExpect(jsonPath("$.name").value(workoutDto.getName()))
                 .andExpect(jsonPath("$.exercisesId[0]").value(EXERCISE_1.getId()))
                 .andExpect(jsonPath("$.exercises[0].id").value(EXERCISE_1.getId()))
                 .andExpect(jsonPath("$.exercises[0].name").value(EXERCISE_1.getName()));
@@ -121,5 +118,29 @@ class WorkoutsControllerTest extends WorkoutLoggerControllerTest {
                 Arguments.of(new InvalidArgumentException("")),
                 Arguments.of(new AlreadyExistsException(""))
         );
+    }
+
+    @Test
+    void shouldReturnJsonWithCorrectWorkout() throws Exception {
+        WorkoutDto workoutDto = getWorkoutDto(EXERCISE_1);
+        when(workoutService.getWorkoutById(anyLong())).thenReturn(workoutDto);
+
+        mvc.perform(get("/workouts/4")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(workoutDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(workoutDto.getId()))
+                .andExpect(jsonPath("$.name").value(workoutDto.getName()))
+                .andExpect(jsonPath("$.exercisesId[0]").value(EXERCISE_1.getId()))
+                .andExpect(jsonPath("$.exercises[0].id").value(EXERCISE_1.getId()))
+                .andExpect(jsonPath("$.exercises[0].name").value(EXERCISE_1.getName()));
+    }
+
+    private WorkoutDto getWorkoutDto(Exercise exercise) {
+        Workout workout = new Workout();
+        workout.setId(4L);
+        workout.setName("workoutName");
+        workout.setExercises(Collections.singleton(EXERCISE_1));
+        return new WorkoutDto(workout);
     }
 }
