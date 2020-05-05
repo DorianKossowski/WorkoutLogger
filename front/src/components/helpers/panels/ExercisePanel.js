@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { LinkContainer } from "react-router-bootstrap";
 
 import './panelStyle.css';
 
@@ -14,8 +14,8 @@ class ExercisePanel extends Component {
                     { this.props.data.name }
                 </Row>
                 <Row className='workoutPanelContent'>
-                    <Col className='workoutPanelContentSimple'>placeholder</Col>
-                    <Link to={ linkTo } className='clickableCol'><Col className='workoutPanelContentStats'>Manage</Col></Link>
+                    <Col className='workoutPanelContentSimple'>Last: 05.05.2020</Col>
+                    <LinkContainer to={ linkTo }><Col as='a' className='workoutPanelContentStats'>Manage</Col></LinkContainer>
                 </Row>
             </Container>
         );

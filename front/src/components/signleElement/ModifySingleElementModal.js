@@ -3,12 +3,12 @@ import { Modal, Button, Form } from 'react-bootstrap/';
 import { Formik,  Field, ErrorMessage } from 'formik';
 import { FaEdit } from 'react-icons/fa';
 
-import api from '../helpers/Api';
-import ErrorAlert from './helpers/ErrorAlert';
-import handleError from '../helpers/ErrorHandlingService';
+import api from '../../helpers/Api';
+import ErrorAlert from '../helpers/ErrorAlert';
+import handleError from '../../helpers/ErrorHandlingService';
 
 
-class ModifyExerciseModal extends Component {
+class ModifySingleElementModal extends Component {
 
     state = {
         show: false,
@@ -24,7 +24,7 @@ class ModifyExerciseModal extends Component {
             <Button variant="outline-dark" onClick={this.handleShow}><FaEdit/> Modify</Button>
             <Modal show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modify exercise</Modal.Title>
+                    <Modal.Title>Modify</Modal.Title>
                 </Modal.Header>
                 { this.getCreationForm() }
             </Modal>
@@ -38,7 +38,7 @@ class ModifyExerciseModal extends Component {
             <ErrorAlert msg={this.state.errMsg}/>
             <Formik
             initialErrors={{ name: ''}}
-            initialValues={{ name: this.props.exercise.name }}
+            initialValues={{ name: this.props.singleElement.name }}
             validate={this.validateFields()}
             onSubmit={this.handleSubmit()}
             >
@@ -79,7 +79,7 @@ class ModifyExerciseModal extends Component {
             this.setState({ errMsg: '' })
             api({
                 method: 'PUT',
-                url: `/exercises/edit/${ this.props.exercise.id }`,
+                url: `/${ this.props.baseUrl() }/edit/${ this.props.singleElement.id }`,
                 data: { ...values }
             })
             .then(() => {
@@ -93,4 +93,4 @@ class ModifyExerciseModal extends Component {
     }
 }
 
-export default ModifyExerciseModal;
+export default ModifySingleElementModal;

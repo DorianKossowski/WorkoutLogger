@@ -1,4 +1,4 @@
-.exerciseHeader {
+.singleElementHeader {
     display: flow-root;
     border: 2px solid #dee2e6;
     margin: 10px;
@@ -10,10 +10,10 @@
     color: #495057;
 }
 
-.exerciseHeaderLeft {
+.singleElementHeaderLeft {
     float: left;
 }
 
-.exerciseHeaderRight {
+.singleElementHeaderRight {
     float: right;
 }

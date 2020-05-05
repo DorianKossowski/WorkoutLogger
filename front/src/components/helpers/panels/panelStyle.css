@@ -31,9 +31,3 @@
     padding: 10px 0;
     background: #1a1c1f;
 }
-
-.clickableCol {
-    flex-basis: 0;
-    flex-grow: 1;
-    max-width: 100%;
-}
