@@ -47,7 +47,7 @@ public class ExerciseServiceImpl implements ExerciseService {
         if (exerciseName.isEmpty()) {
             throw new InvalidArgumentException("Name cannot be empty");
         }
-        if (exerciseRepository.existsByName(exerciseName)) {
+        if (exerciseRepository.existsByNameAndUserId(exerciseName, userGetter.get().getId())) {
             throw new AlreadyExistsException(exerciseName);
         }
     }
@@ -77,12 +77,10 @@ public class ExerciseServiceImpl implements ExerciseService {
     public ExerciseDto editExercise(ExerciseDto exerciseDto, long id) {
         Exercise exercise = getExerciseWithValidation(id);
         String newName = exerciseDto.getName();
-        if (newName.isEmpty()) {
-            throw new InvalidArgumentException("Name cannot be empty");
-        }
         if (newName.equals(exercise.getName())) {
             return new ExerciseDto(exercise);
         }
+        validateExerciseName(newName);
         exercise.setName(newName);
         Exercise updatedExercise = exerciseRepository.save(exercise);
         return new ExerciseDto(updatedExercise);

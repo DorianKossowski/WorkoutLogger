@@ -40,18 +40,23 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Override
     public WorkoutDto createWorkout(WorkoutDto workoutDto) {
-        if (workoutDto.getName().isEmpty()) {
-            throw new InvalidArgumentException("Name cannot be empty");
-        }
+        String name = workoutDto.getName();
+        validateWorkoutName(name);
         if (workoutDto.getExercisesId().isEmpty()) {
             throw new InvalidArgumentException("Select at least one exercise");
         }
-        if (workoutRepository.existsByName(workoutDto.getName())) {
-            throw new AlreadyExistsException(workoutDto.getName());
-        }
         Workout savedWorkout = workoutRepository.save(getNewWorkout(workoutDto));
-        logger.debug(workoutDto.getName() + " created successfully");
+        logger.debug(name + " created successfully");
         return new WorkoutDto(savedWorkout);
+    }
+
+    private void validateWorkoutName(String name) {
+        if (name.isEmpty()) {
+            throw new InvalidArgumentException("Name cannot be empty");
+        }
+        if (workoutRepository.existsByNameAndUserId(name, userGetter.get().getId())) {
+            throw new AlreadyExistsException(name);
+        }
     }
 
     private Workout getNewWorkout(WorkoutDto workoutDto) {
@@ -80,12 +85,10 @@ public class WorkoutServiceImpl implements WorkoutService {
     public WorkoutDto editWorkout(WorkoutDto workoutDto, long id) {
         Workout workout = getWorkoutWithValidation(id);
         String newName = workoutDto.getName();
-        if (newName.isEmpty()) {
-            throw new InvalidArgumentException("Name cannot be empty");
-        }
         if (newName.equals(workout.getName())) {
             return new WorkoutDto(workout);
         }
+        validateWorkoutName(newName);
         workout.setName(newName);
         Workout updatedWorkout = workoutRepository.save(workout);
         return new WorkoutDto(updatedWorkout);

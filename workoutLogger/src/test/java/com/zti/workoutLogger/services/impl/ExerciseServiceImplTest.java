@@ -118,7 +118,7 @@ class ExerciseServiceImplTest extends WorkoutLoggerServiceTests {
     @Test
     void shouldGetUserExercisesWhenManyUsers() {
         // given
-        when(authenticatedUserGetter.get()).thenReturn(initUser1, initUser2);
+        when(authenticatedUserGetter.get()).thenReturn(initUser1, initUser1, initUser2);
         ExerciseDto exerciseDto = new ExerciseDto(NAME);
         ExerciseDto exerciseDto2 = new ExerciseDto(NAME + "2");
         exerciseService.createExercise(exerciseDto);
@@ -131,7 +131,8 @@ class ExerciseServiceImplTest extends WorkoutLoggerServiceTests {
         assertAll(
                 () -> assertThat(userExercises).hasSize(1),
                 () -> assertThat(userExercises).extracting(ExerciseDto::getName)
-                        .containsExactly(NAME)
+                        .containsExactly(NAME),
+                () -> verify(authenticatedUserGetter, times(4)).get()
         );
     }
 
@@ -153,11 +154,11 @@ class ExerciseServiceImplTest extends WorkoutLoggerServiceTests {
 
     @Test
     void shouldThrowWhenWrongUserId() {
-        when(authenticatedUserGetter.get()).thenReturn(initUser1, initUser2);
+        when(authenticatedUserGetter.get()).thenReturn(initUser1, initUser1, initUser2);
         long newExerciseId = exerciseService.createExercise(new ExerciseDto(NAME)).getId();
 
         assertThatThrownBy(() -> exerciseService.getExerciseById(newExerciseId)).isExactlyInstanceOf(ForbiddenException.class);
-        verify(authenticatedUserGetter, times(2)).get();
+        verify(authenticatedUserGetter, times(3)).get();
     }
 
     @ParameterizedTest
@@ -184,5 +185,15 @@ class ExerciseServiceImplTest extends WorkoutLoggerServiceTests {
         assertThatThrownBy(() -> exerciseService.editExercise(new ExerciseDto(""), newExerciseId))
                 .isExactlyInstanceOf(InvalidArgumentException.class)
                 .hasMessage("Name cannot be empty");
+    }
+
+    @Test
+    void shouldThrowWhenExistsEditedName() {
+        exerciseService.createExercise(new ExerciseDto(NAME));
+        long newExerciseId = exerciseService.createExercise(new ExerciseDto(NAME + 1)).getId();
+
+        assertThatThrownBy(() -> exerciseService.editExercise(new ExerciseDto(NAME), newExerciseId))
+                .isExactlyInstanceOf(AlreadyExistsException.class)
+                .hasMessage(NAME + " already exists");
     }
 }

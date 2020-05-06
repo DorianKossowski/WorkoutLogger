@@ -112,7 +112,7 @@ class WorkoutServiceImplTest extends WorkoutLoggerServiceTests {
                         WORKOUT_NAME + " already exists"),
                 Arguments.of(new WorkoutDto("", Collections.singleton(1L)), InvalidArgumentException.class,
                         "Name cannot be empty"),
-                Arguments.of(new WorkoutDto(WORKOUT_NAME, Collections.emptySet()), InvalidArgumentException.class,
+                Arguments.of(new WorkoutDto("someName", Collections.emptySet()), InvalidArgumentException.class,
                         "Select at least one exercise")
         );
     }
@@ -192,6 +192,17 @@ class WorkoutServiceImplTest extends WorkoutLoggerServiceTests {
         long newWorkoutId = getNewWorkoutId(WORKOUT_NAME);
 
         assertThatThrownBy(() -> workoutService.getWorkoutById(newWorkoutId)).isExactlyInstanceOf(ForbiddenException.class);
-        verify(authenticatedUserGetter, times(1)).get();
+        verify(authenticatedUserGetter, times(2)).get();
+    }
+
+    @Test
+    void shouldThrowWhenExistsEditedName() {
+        getNewWorkoutId(WORKOUT_NAME);
+        long newWorkoutId = getNewWorkoutId(WORKOUT_NAME + 1);
+
+        assertThatThrownBy(() -> workoutService.editWorkout(new WorkoutDto(WORKOUT_NAME,
+                new HashSet<>(Collections.singletonList(exercise1.getId()))), newWorkoutId))
+                .isExactlyInstanceOf(AlreadyExistsException.class)
+                .hasMessage(WORKOUT_NAME + " already exists");
     }
 }

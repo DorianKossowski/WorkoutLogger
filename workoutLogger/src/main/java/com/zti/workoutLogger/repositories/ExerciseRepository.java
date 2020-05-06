@@ -10,6 +10,8 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
     boolean existsByName(String name);
 
+    boolean existsByNameAndUserId(String name, long userId);
+
     List<Exercise> findAllByUserId(long userId);
 
     Set<Exercise> findByIdIn(Set<Long> idList);
