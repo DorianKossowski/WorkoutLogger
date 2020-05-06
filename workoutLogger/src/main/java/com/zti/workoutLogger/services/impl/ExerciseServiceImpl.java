@@ -4,6 +4,7 @@ import com.zti.workoutLogger.models.Exercise;
 import com.zti.workoutLogger.models.dto.ExerciseDto;
 import com.zti.workoutLogger.repositories.ExerciseRepository;
 import com.zti.workoutLogger.services.ExerciseService;
+import com.zti.workoutLogger.services.WorkoutService;
 import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
 import com.zti.workoutLogger.utils.exceptions.ForbiddenException;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +27,8 @@ public class ExerciseServiceImpl implements ExerciseService {
     private AuthenticatedUserGetter userGetter;
     @Autowired
     private ExerciseRepository exerciseRepository;
+    @Autowired
+    private WorkoutService workoutService;
 
     @Override
     public List<ExerciseDto> getAllExercisesByUserId(long userId) {
@@ -84,5 +88,18 @@ public class ExerciseServiceImpl implements ExerciseService {
         exercise.setName(newName);
         Exercise updatedExercise = exerciseRepository.save(exercise);
         return new ExerciseDto(updatedExercise);
+    }
+
+    @Transactional
+    @Override
+    public void deleteExercise(long id) {
+        Exercise exerciseWithValidation = getExerciseWithValidation(id);
+        exerciseWithValidation.getWorkouts().forEach(workout -> {
+            if (workout.getExercises().size() == 1) {
+                workoutService.deleteWorkout(workout.getId());
+            }
+        });
+        exerciseRepository.deleteById(id);
+        logger.debug(String.format("Exercise with id %s deleted correctly", id));
     }
 }

@@ -93,4 +93,10 @@ public class WorkoutServiceImpl implements WorkoutService {
         Workout updatedWorkout = workoutRepository.save(workout);
         return new WorkoutDto(updatedWorkout);
     }
+
+    @Override
+    public void deleteWorkout(long id) {
+        workoutRepository.deleteById(id);
+        logger.debug(String.format("Workout with id %s deleted correctly", id));
+    }
 }

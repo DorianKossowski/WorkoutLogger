@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+
 @RestController
 @CrossOrigin(origins = "*")
 public class WorkoutsController {
@@ -43,5 +45,11 @@ public class WorkoutsController {
     @PutMapping("/workouts/edit/{id}")
     public WorkoutDto editWorkout(@RequestBody WorkoutDto workoutDto, @PathVariable long id) {
         return workoutService.editWorkout(workoutDto, id);
+    }
+
+    @DeleteMapping("/workouts/delete/{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void deleteWorkout(@PathVariable long id) {
+        workoutService.deleteWorkout(id);
     }
 }

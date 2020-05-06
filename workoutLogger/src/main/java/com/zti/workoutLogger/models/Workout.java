@@ -13,7 +13,11 @@ public class Workout {
     @Column
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH
+    })
     @JoinTable(
             name = "workoutExercise",
             joinColumns = {@JoinColumn(name = "workoutId")},

@@ -145,4 +145,12 @@ class ExercisesControllerTest extends WorkoutLoggerControllerTest {
                 .andExpect(jsonPath("$.id").value(exercise.getId()))
                 .andExpect(jsonPath("$.name").value(exercise.getName()));
     }
+
+    @Test
+    void shouldReturnEmptyAfterDeletion() throws Exception {
+        mvc.perform(delete("/exercises/delete/2")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").doesNotExist())
+                .andExpect(status().is(204));
+    }
 }

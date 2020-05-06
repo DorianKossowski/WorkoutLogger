@@ -4,11 +4,13 @@ import com.zti.workoutLogger.models.Exercise;
 import com.zti.workoutLogger.models.User;
 import com.zti.workoutLogger.models.dto.ExerciseDto;
 import com.zti.workoutLogger.models.dto.UserDto;
+import com.zti.workoutLogger.models.dto.WorkoutDto;
 import com.zti.workoutLogger.repositories.ExerciseRepository;
 import com.zti.workoutLogger.repositories.UserRepository;
 import com.zti.workoutLogger.services.ExerciseService;
 import com.zti.workoutLogger.services.UserService;
 import com.zti.workoutLogger.services.WorkoutLoggerServiceTests;
+import com.zti.workoutLogger.services.WorkoutService;
 import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
 import com.zti.workoutLogger.utils.exceptions.ForbiddenException;
@@ -22,6 +24,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -41,6 +46,8 @@ class ExerciseServiceImplTest extends WorkoutLoggerServiceTests {
     private ExerciseRepository exerciseRepository;
     @Autowired
     private ExerciseService exerciseService;
+    @Autowired
+    private WorkoutService workoutService;
     @Autowired
     private UserRepository userRepository;
     @MockBean
@@ -195,5 +202,48 @@ class ExerciseServiceImplTest extends WorkoutLoggerServiceTests {
         assertThatThrownBy(() -> exerciseService.editExercise(new ExerciseDto(NAME), newExerciseId))
                 .isExactlyInstanceOf(AlreadyExistsException.class)
                 .hasMessage(NAME + " already exists");
+    }
+
+    @Test
+    void shouldDeleteExercise() {
+        ExerciseDto createdExercise = exerciseService.createExercise(new ExerciseDto(NAME));
+
+        exerciseService.deleteExercise(createdExercise.getId());
+
+        assertThat(exerciseService.getAllExercisesByUserId(initUser1.getId())).isEmpty();
+    }
+
+    @Test
+    void shouldDeleteExerciseWithItsWorkout() {
+        // given
+        ExerciseDto createdExercise = exerciseService.createExercise(new ExerciseDto(NAME));
+        workoutService.createWorkout(new WorkoutDto("workout", Collections.singleton(createdExercise.getId())));
+
+        // when
+        exerciseService.deleteExercise(createdExercise.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(exerciseService.getAllExercisesByUserId(initUser1.getId())).isEmpty(),
+                () -> assertThat(workoutService.getAllWorkoutsByUserId(initUser1.getId())).isEmpty()
+        );
+    }
+
+    @Test
+    void shouldDeleteExerciseWithoutItsWorkout() {
+        // given
+        ExerciseDto createdExercise = exerciseService.createExercise(new ExerciseDto(NAME));
+        ExerciseDto createdExercise2 = exerciseService.createExercise(new ExerciseDto(NAME + 1));
+        workoutService.createWorkout(new WorkoutDto("workout", new HashSet<>(Arrays.asList(createdExercise.getId(),
+                createdExercise2.getId()))));
+
+        // when
+        exerciseService.deleteExercise(createdExercise.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(exerciseService.getAllExercisesByUserId(initUser1.getId())).hasSize(1),
+                () -> assertThat(workoutService.getAllWorkoutsByUserId(initUser1.getId())).hasSize(1)
+        );
     }
 }

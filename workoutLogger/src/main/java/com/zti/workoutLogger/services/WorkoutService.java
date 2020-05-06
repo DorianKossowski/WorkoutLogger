@@ -13,4 +13,6 @@ public interface WorkoutService {
     WorkoutDto getWorkoutById(long id);
 
     WorkoutDto editWorkout(WorkoutDto workoutDto, long id);
+
+    void deleteWorkout(long id);
 }

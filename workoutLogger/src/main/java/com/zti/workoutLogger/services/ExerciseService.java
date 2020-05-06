@@ -13,4 +13,6 @@ public interface ExerciseService {
     ExerciseDto getExerciseById(long id);
 
     ExerciseDto editExercise(ExerciseDto exerciseDto, long id);
+
+    void deleteExercise(long id);
 }

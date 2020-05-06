@@ -23,7 +23,7 @@ public class CrossOriginFilter implements Filter {
         ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Headers",
                 "authorization, content-type");
         ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Methods",
-                "GET, OPTIONS, HEAD, PUT, POST");
+                "GET, OPTIONS, HEAD, PUT, POST, DELETE");
 
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
 

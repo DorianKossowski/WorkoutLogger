@@ -166,14 +166,14 @@ class WorkoutServiceImplTest extends WorkoutLoggerServiceTests {
 
     @Test
     void shouldGetWorkoutById() {
-        long newWorkoutId = getNewWorkoutId(WORKOUT_NAME);
+        long newWorkoutId = createNewWorkout(WORKOUT_NAME);
 
         WorkoutDto workoutDtoById = workoutService.getWorkoutById(newWorkoutId);
 
         assertThat(workoutDtoById.getName()).isEqualTo(WORKOUT_NAME);
     }
 
-    private long getNewWorkoutId(String workoutName) {
+    private long createNewWorkout(String workoutName) {
         WorkoutDto dto = new WorkoutDto(workoutName, new HashSet<>(Collections.singletonList(exercise1.getId())));
         return workoutService.createWorkout(dto).getId();
     }
@@ -189,7 +189,7 @@ class WorkoutServiceImplTest extends WorkoutLoggerServiceTests {
     void shouldThrowWhenWrongUserId() {
         reset(authenticatedUserGetter);
         when(authenticatedUserGetter.get()).thenReturn(initUser2);
-        long newWorkoutId = getNewWorkoutId(WORKOUT_NAME);
+        long newWorkoutId = createNewWorkout(WORKOUT_NAME);
 
         assertThatThrownBy(() -> workoutService.getWorkoutById(newWorkoutId)).isExactlyInstanceOf(ForbiddenException.class);
         verify(authenticatedUserGetter, times(2)).get();
@@ -197,12 +197,24 @@ class WorkoutServiceImplTest extends WorkoutLoggerServiceTests {
 
     @Test
     void shouldThrowWhenExistsEditedName() {
-        getNewWorkoutId(WORKOUT_NAME);
-        long newWorkoutId = getNewWorkoutId(WORKOUT_NAME + 1);
+        createNewWorkout(WORKOUT_NAME);
+        long newWorkoutId = createNewWorkout(WORKOUT_NAME + 1);
 
         assertThatThrownBy(() -> workoutService.editWorkout(new WorkoutDto(WORKOUT_NAME,
                 new HashSet<>(Collections.singletonList(exercise1.getId()))), newWorkoutId))
                 .isExactlyInstanceOf(AlreadyExistsException.class)
                 .hasMessage(WORKOUT_NAME + " already exists");
+    }
+
+    @Test
+    void shouldDeleteWorkout() {
+        long newWorkoutId = createNewWorkout(WORKOUT_NAME);
+
+        workoutService.deleteWorkout(newWorkoutId);
+
+        assertAll(
+                () -> assertThat(exerciseService.getAllExercisesByUserId(initUser1.getId())).hasSize(2),
+                () -> assertThat(workoutService.getAllWorkoutsByUserId(initUser1.getId())).isEmpty()
+        );
     }
 }
