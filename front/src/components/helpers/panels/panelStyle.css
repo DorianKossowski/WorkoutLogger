@@ -18,16 +18,25 @@
 }
 
 .workoutPanelContentSimple {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px 0;
 }
 
 .workoutPanelContentTrain {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px 0;
     background: #1a1c1f;
     border-right: 2px solid #0f1011;
 }
 
 .workoutPanelContentStats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px 0;
     background: #1a1c1f;
 }

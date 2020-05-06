@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap/';
-import { Formik, Field, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 import { FaTrash } from 'react-icons/fa';
 
 import api from '../../helpers/Api';
