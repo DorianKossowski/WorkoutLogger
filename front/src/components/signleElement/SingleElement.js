@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import api from '../../helpers/Api.js';
 import handleError from '../../helpers/ErrorHandlingService';
 import ModifySingleElementModal from './ModifySingleElementModal';
+import DeleteSingleElementModal from './DeleteSingleElementModal.js';
 
 import './singleElementStyle.css';
 
@@ -36,6 +37,10 @@ class SingleElement extends Component {
         throw "Abstract method with base url not implemented";
     }
 
+    getRedirect = () => {
+        throw "Abstract method with base url not implemented";
+    }
+
     updateName = (newName) => {
         this.setState( prevState => {
             let singleElement = { ...prevState.singleElement };
@@ -51,6 +56,8 @@ class SingleElement extends Component {
                 <div className='singleElementHeaderLeft'>{this.state.singleElement.name}</div>
                 <div className='singleElementHeaderRight'>
                     <ModifySingleElementModal baseUrl={ this.getUrlBase } postAction={ this.updateName } 
+                        singleElement={this.state.singleElement}/>
+                    <DeleteSingleElementModal baseUrl={ this.getUrlBase } postAction={ this.getRedirect } 
                         singleElement={this.state.singleElement}/>
                 </div>
             </div>

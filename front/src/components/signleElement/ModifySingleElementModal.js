@@ -26,13 +26,13 @@ class ModifySingleElementModal extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title>Modify</Modal.Title>
                 </Modal.Header>
-                { this.getCreationForm() }
+                { this.getModificationForm() }
             </Modal>
             </>
         );
     }
 
-    getCreationForm() {
+    getModificationForm() {
         return (
             <>
             <ErrorAlert msg={this.state.errMsg}/>
@@ -42,7 +42,7 @@ class ModifySingleElementModal extends Component {
             validate={this.validateFields()}
             onSubmit={this.handleSubmit()}
             >
-            {({ handleSubmit, errors, isSubmitting, isValid }) => (
+            {({ handleSubmit, isSubmitting }) => (
                 <Form>
                     <Field name='name'> 
                     {({ field }) => (
@@ -75,7 +75,7 @@ class ModifySingleElementModal extends Component {
     }
 
     handleSubmit() {
-        return (values, actions) => {
+        return (values, { setSubmitting }) => {
             this.setState({ errMsg: '' })
             api({
                 method: 'PUT',
@@ -87,7 +87,7 @@ class ModifySingleElementModal extends Component {
                 this.props.postAction(values.name);
             }).catch((error) => {
                 this.setState({ errMsg: handleError(error, 'Modification failed: ') });
-                actions.setSubmitting(false);
+                setSubmitting(false);
             })
         };
     }

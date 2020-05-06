@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 import SingleElement from './SingleElement';
 import OvalLoader from '../helpers/OvalLoader';
@@ -8,6 +9,12 @@ class Exercise extends SingleElement {
     
     getUrlBase = () => {
         return 'exercises';
+    }
+
+    getRedirect = () => {
+        return (
+            <Redirect to='/exercises'/>
+        );
     }
 
     render() {
