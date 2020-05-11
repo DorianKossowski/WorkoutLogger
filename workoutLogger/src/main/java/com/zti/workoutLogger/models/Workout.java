@@ -1,5 +1,7 @@
 package com.zti.workoutLogger.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +26,10 @@ public class Workout {
             inverseJoinColumns = {@JoinColumn(name = "exerciseId")}
     )
     private Set<Exercise> exercises = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
+    private Set<Training> trainings;
 
     public Workout() {
     }
@@ -50,5 +56,13 @@ public class Workout {
 
     public void setExercises(Set<Exercise> exercises) {
         this.exercises = exercises;
+    }
+
+    public Set<Training> getTrainings() {
+        return trainings;
+    }
+
+    public void setTrainings(Set<Training> trainings) {
+        this.trainings = trainings;
     }
 }

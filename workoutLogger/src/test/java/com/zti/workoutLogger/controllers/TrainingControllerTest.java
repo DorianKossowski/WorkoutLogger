@@ -4,6 +4,8 @@ import com.zti.workoutLogger.models.Exercise;
 import com.zti.workoutLogger.models.User;
 import com.zti.workoutLogger.models.Workout;
 import com.zti.workoutLogger.models.dto.WorkoutDto;
+import com.zti.workoutLogger.models.dto.WorkoutWithTrainingsDto;
+import com.zti.workoutLogger.services.TrainingService;
 import com.zti.workoutLogger.services.WorkoutService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class TrainingControllerTest extends WorkoutLoggerControllerTest {
     @MockBean
     private WorkoutService workoutService;
+    @MockBean
+    private TrainingService trainingService;
 
     private static final User INIT_USER = new User();
     private static final Exercise EXERCISE_1 = new Exercise();
@@ -37,7 +41,8 @@ class TrainingControllerTest extends WorkoutLoggerControllerTest {
     @Test
     void shouldReturnJsonForNewTraining() throws Exception {
         WorkoutDto workoutDto = getWorkoutDto(EXERCISE_1);
-        when(workoutService.getWorkoutById(anyLong())).thenReturn(workoutDto);
+        when(workoutService.getWorkoutById(anyLong())).thenReturn(new WorkoutWithTrainingsDto(workoutDto,
+                Collections.emptyList()));
 
         mvc.perform(get("/workouts/3/training"))
                 .andExpect(status().isOk())

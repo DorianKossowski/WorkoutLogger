@@ -22,14 +22,14 @@ public class TrainingController {
 
     @GetMapping("/workouts/{workoutId}/training")
     public List<TrainingExerciseDto> getNewTrainingExercises(@PathVariable long workoutId) {
-        Set<Exercise> exercises = workoutService.getWorkoutById(workoutId).getExercises();
+        Set<Exercise> exercises = workoutService.getWorkoutById(workoutId).getWorkout().getExercises();
         return exercises.stream()
                 .map(TrainingExerciseDto::new)
                 .collect(Collectors.toList());
     }
 
     @PostMapping("/workouts/{workoutId}/addTraining")
-    public TrainingDto editExercise(@RequestBody TrainingDto trainingDto, @PathVariable long workoutId) {
+    public TrainingDto addTraining(@RequestBody TrainingDto trainingDto, @PathVariable long workoutId) {
         return trainingService.createTraining(trainingDto, workoutId);
     }
 }

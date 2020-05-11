@@ -3,7 +3,7 @@ package com.zti.workoutLogger.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Training {
@@ -12,7 +12,7 @@ public class Training {
     private long id;
 
     @Column
-    private Date date;
+    private LocalDate date;
 
     @JsonIgnore
     @ManyToOne
@@ -24,7 +24,7 @@ public class Training {
 
     public Training(Workout workout) {
         this.workout = workout;
-        this.date = new Date();
+        this.date = LocalDate.now();
     }
 
     public long getId() {
@@ -35,11 +35,11 @@ public class Training {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

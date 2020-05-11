@@ -10,6 +10,9 @@ public class TrainingExerciseDto {
     private String name;
     private List<SetDto> sets;
 
+    public TrainingExerciseDto() {
+    }
+
     public TrainingExerciseDto(Exercise exercise) {
         this.id = exercise.getId();
         this.name = exercise.getName();

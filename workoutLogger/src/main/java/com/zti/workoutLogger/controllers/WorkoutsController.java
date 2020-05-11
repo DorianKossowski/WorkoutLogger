@@ -2,6 +2,7 @@ package com.zti.workoutLogger.controllers;
 
 import com.zti.workoutLogger.models.dto.ExerciseDto;
 import com.zti.workoutLogger.models.dto.WorkoutDto;
+import com.zti.workoutLogger.models.dto.WorkoutWithTrainingsDto;
 import com.zti.workoutLogger.models.dto.WorkoutsWithExercisesDto;
 import com.zti.workoutLogger.services.ExerciseService;
 import com.zti.workoutLogger.services.WorkoutService;
@@ -33,7 +34,7 @@ public class WorkoutsController {
     }
 
     @GetMapping("/workouts/{id}")
-    public WorkoutDto getWorkout(@PathVariable long id) {
+    public WorkoutWithTrainingsDto getWorkout(@PathVariable long id) {
         return workoutService.getWorkoutById(id);
     }
 

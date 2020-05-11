@@ -12,7 +12,7 @@ class SingleElement extends Component {
     state = {
         singleElement : [],
         showModal: false,
-        loading: false,
+        loading: true,
         errMsg: ''
     }
 

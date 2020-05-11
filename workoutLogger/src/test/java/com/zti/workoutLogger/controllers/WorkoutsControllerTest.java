@@ -5,6 +5,7 @@ import com.zti.workoutLogger.models.User;
 import com.zti.workoutLogger.models.Workout;
 import com.zti.workoutLogger.models.dto.ExerciseDto;
 import com.zti.workoutLogger.models.dto.WorkoutDto;
+import com.zti.workoutLogger.models.dto.WorkoutWithTrainingsDto;
 import com.zti.workoutLogger.services.ExerciseService;
 import com.zti.workoutLogger.services.WorkoutService;
 import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
@@ -122,17 +123,18 @@ class WorkoutsControllerTest extends WorkoutLoggerControllerTest {
     @Test
     void shouldReturnJsonWithCorrectWorkout() throws Exception {
         WorkoutDto workoutDto = getWorkoutDto(EXERCISE_1);
-        when(workoutService.getWorkoutById(anyLong())).thenReturn(workoutDto);
+        when(workoutService.getWorkoutById(anyLong())).thenReturn(new WorkoutWithTrainingsDto(workoutDto,
+                Collections.emptyList()));
 
         mvc.perform(get("/workouts/4")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(workoutDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(workoutDto.getId()))
-                .andExpect(jsonPath("$.name").value(workoutDto.getName()))
-                .andExpect(jsonPath("$.exercisesId[0]").value(EXERCISE_1.getId()))
-                .andExpect(jsonPath("$.exercises[0].id").value(EXERCISE_1.getId()))
-                .andExpect(jsonPath("$.exercises[0].name").value(EXERCISE_1.getName()));
+                .andExpect(jsonPath("$.workoutDto.id").value(workoutDto.getId()))
+                .andExpect(jsonPath("$.workoutDto.name").value(workoutDto.getName()))
+                .andExpect(jsonPath("$.workoutDto.exercisesId[0]").value(EXERCISE_1.getId()))
+                .andExpect(jsonPath("$.workoutDto.exercises[0].id").value(EXERCISE_1.getId()))
+                .andExpect(jsonPath("$.workoutDto.exercises[0].name").value(EXERCISE_1.getName()));
     }
 
     private WorkoutDto getWorkoutDto(Exercise exercise) {

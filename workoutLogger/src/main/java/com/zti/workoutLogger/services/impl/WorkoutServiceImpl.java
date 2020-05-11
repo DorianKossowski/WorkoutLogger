@@ -1,9 +1,12 @@
 package com.zti.workoutLogger.services.impl;
 
 import com.zti.workoutLogger.models.Workout;
+import com.zti.workoutLogger.models.dto.TrainingDto;
 import com.zti.workoutLogger.models.dto.WorkoutDto;
+import com.zti.workoutLogger.models.dto.WorkoutWithTrainingsDto;
 import com.zti.workoutLogger.repositories.ExerciseRepository;
 import com.zti.workoutLogger.repositories.WorkoutRepository;
+import com.zti.workoutLogger.services.TrainingService;
 import com.zti.workoutLogger.services.WorkoutService;
 import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
@@ -29,6 +32,8 @@ public class WorkoutServiceImpl implements WorkoutService {
     private WorkoutRepository workoutRepository;
     @Autowired
     private ExerciseRepository exerciseRepository;
+    @Autowired
+    private TrainingService trainingService;
 
     @Override
     public List<WorkoutDto> getAllWorkoutsByUserId(long userId) {
@@ -67,8 +72,10 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public WorkoutDto getWorkoutById(long id) {
-        return new WorkoutDto(getWorkoutWithValidation(id));
+    public WorkoutWithTrainingsDto getWorkoutById(long id) {
+        WorkoutDto workoutDto = new WorkoutDto(getWorkoutWithValidation(id));
+        List<TrainingDto> trainingsByWorkoutId = trainingService.getTrainingsByWorkoutId(id);
+        return new WorkoutWithTrainingsDto(workoutDto, trainingsByWorkoutId);
     }
 
     private Workout getWorkoutWithValidation(long id) {

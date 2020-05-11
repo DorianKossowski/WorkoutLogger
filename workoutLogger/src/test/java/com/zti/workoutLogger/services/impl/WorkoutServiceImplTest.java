@@ -6,6 +6,7 @@ import com.zti.workoutLogger.models.Workout;
 import com.zti.workoutLogger.models.dto.ExerciseDto;
 import com.zti.workoutLogger.models.dto.UserDto;
 import com.zti.workoutLogger.models.dto.WorkoutDto;
+import com.zti.workoutLogger.models.dto.WorkoutWithTrainingsDto;
 import com.zti.workoutLogger.repositories.UserRepository;
 import com.zti.workoutLogger.repositories.WorkoutRepository;
 import com.zti.workoutLogger.services.ExerciseService;
@@ -168,9 +169,9 @@ class WorkoutServiceImplTest extends WorkoutLoggerServiceTests {
     void shouldGetWorkoutById() {
         long newWorkoutId = createNewWorkout(WORKOUT_NAME);
 
-        WorkoutDto workoutDtoById = workoutService.getWorkoutById(newWorkoutId);
+        WorkoutWithTrainingsDto workoutDtoById = workoutService.getWorkoutById(newWorkoutId);
 
-        assertThat(workoutDtoById.getName()).isEqualTo(WORKOUT_NAME);
+        assertThat(workoutDtoById.getWorkout().getName()).isEqualTo(WORKOUT_NAME);
     }
 
     private long createNewWorkout(String workoutName) {

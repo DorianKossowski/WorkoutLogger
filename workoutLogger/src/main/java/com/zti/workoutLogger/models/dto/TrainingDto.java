@@ -1,25 +1,41 @@
 package com.zti.workoutLogger.models.dto;
 
+import com.zti.workoutLogger.models.Training;
+
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TrainingDto {
-    private long trainingId;
+    private long id;
+    private LocalDate date;
     private List<TrainingExerciseDto> exercises;
 
     public TrainingDto() {
     }
 
-    public TrainingDto(long trainingId, List<TrainingExerciseDto> exercises) {
-        this.trainingId = trainingId;
-        this.exercises = exercises;
+    public TrainingDto(Training training) {
+        this.id = training.getId();
+        this.date = training.getDate();
+        this.exercises = training.getWorkout().getExercises().stream()
+                .map(TrainingExerciseDto::new)
+                .collect(Collectors.toList());
     }
 
-    public long getTrainingId() {
-        return trainingId;
+    public long getId() {
+        return id;
     }
 
-    public void setTrainingId(long trainingId) {
-        this.trainingId = trainingId;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public List<TrainingExerciseDto> getExercises() {

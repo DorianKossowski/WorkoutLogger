@@ -1,6 +1,7 @@
 package com.zti.workoutLogger.services;
 
 import com.zti.workoutLogger.models.dto.WorkoutDto;
+import com.zti.workoutLogger.models.dto.WorkoutWithTrainingsDto;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface WorkoutService {
 
     WorkoutDto createWorkout(WorkoutDto workoutDto);
 
-    WorkoutDto getWorkoutById(long id);
+    WorkoutWithTrainingsDto getWorkoutById(long id);
 
     WorkoutDto editWorkout(WorkoutDto workoutDto, long id);
 

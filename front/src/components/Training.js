@@ -70,7 +70,7 @@ class Training extends Component {
         api({
             method: applyMethod,
             url: applyUrl,
-            data: { ...this.state.exercises }
+            data: { trainingId: this.state.trainingId, exercises: this.state.exercises }
         })
         .then(data => this.setState({ trainingId: data.trainingId, exercises: data.exercises }))
         .catch(error => this.setState({ errMsg: handleError(error, 'Error during applying: ') }))
