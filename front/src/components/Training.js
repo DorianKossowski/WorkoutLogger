@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap/';
 import _ from 'lodash';
 
+import api from '../helpers/Api.js';
+import handleError from '../helpers/ErrorHandlingService';
 import TrainingPanel from './panels/TrainingPanel';
 import ErrorAlert from './helpers/ErrorAlert';
 import OvalLoader from './helpers/OvalLoader';
@@ -14,7 +16,8 @@ class Training extends Component {
         exercises: [],
         showModal: false,
         loading: false,
-        errMsg: ''
+        errMsg: '',
+        trainingId: ''
     }
 
     componentDidMount = () => {
@@ -22,20 +25,16 @@ class Training extends Component {
     }
 
     getExercises = () => {
-        const { singleElementId } = this.props.match.params;
-        // this.setState({ loading: true });
+        const { workoutId } = this.props.match.params;
+        this.setState({ loading: true });
         this.setState({ errMsg: '' });
-        this.setState({ exercises: [
-            { id: 1, name: 'plecy', sets: [{ id:1, reps: 5, weight: 40 }, { id:2, reps: 8, weight: 30 }] }, 
-            { id:2, name: 'klata', sets: [] }] 
-        });
-        // api({
-        //     method: 'GET',
-        //     url: `training/${ singleElementId }`
-        // })
-        // .then(data => this.setState({ singleElement: data }))
-        // .catch(error => this.setState({ errMsg: handleError(error, 'Error during getting: ') }))
-        // .finally(() => this.setState({ loading: false }));
+        api({
+            method: 'GET',
+            url: `workouts/${ workoutId }/training/`
+        })
+        .then(data => this.setState({ exercises: data }))
+        .catch(error => this.setState({ errMsg: handleError(error, 'Error during getting: ') }))
+        .finally(() => this.setState({ loading: false }));
     }
 
     updateState = (updatedSet) => {
@@ -48,6 +47,8 @@ class Training extends Component {
         return (
             <>
             { this.state.exercises.map(exercise => <TrainingPanel key={ exercise.id } data={ exercise } postAction={ this.updateState }/>) }
+            <Button variant="outline-dark">Apply</Button>
+            <Button variant="outline-dark">Save</Button>
             </>
         );
     }
@@ -58,8 +59,6 @@ class Training extends Component {
                 <ErrorAlert msg={this.state.errMsg}/>
                 <h1>Training</h1>
                 {this.state.loading ? <OvalLoader/> : this.getExercisesRender()}
-                <Button variant="outline-dark">Apply</Button>
-                <Button variant="outline-dark">Save</Button>
             </div>
         );
     }
