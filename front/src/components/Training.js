@@ -37,20 +37,44 @@ class Training extends Component {
         .finally(() => this.setState({ loading: false }));
     }
 
+    getExercisesRender = () => {
+        return (
+            <>
+            { this.state.exercises.map(exercise => <TrainingPanel key={ exercise.id } data={ exercise } postAction={ this.updateState }/>) }
+            <Button variant="outline-dark" onClick={ this.applyState }>Apply</Button>
+            <Button variant="outline-dark">Save</Button>
+            </>
+        );
+    }
+
     updateState = (updatedSet) => {
         this.setState( prevState => {
             return { exercises: this.trainingStateManager.getUpdatedExercises(prevState.exercises, updatedSet) };
         });
     }
 
-    getExercisesRender = () => {
-        return (
-            <>
-            { this.state.exercises.map(exercise => <TrainingPanel key={ exercise.id } data={ exercise } postAction={ this.updateState }/>) }
-            <Button variant="outline-dark">Apply</Button>
-            <Button variant="outline-dark">Save</Button>
-            </>
-        );
+    applyState = () => {
+        const { workoutId } = this.props.match.params;
+        this.setState({ loading: true });
+        this.setState({ errMsg: '' });
+        
+        let applyMethod;
+        let applyUrl;
+        if(this.state.trainingId) {
+            applyMethod = 'PUT';
+            applyUrl = `workouts/${ workoutId }/training/${ this.state.trainingId }`
+        } else {
+            applyMethod = 'POST';
+            applyUrl = `workouts/${ workoutId }/addTraining`
+        }
+        api({
+            method: applyMethod,
+            url: applyUrl,
+            data: { ...this.state.exercises }
+        })
+        .then(data => this.setState({ trainingId: data.trainingId, exercises: data.exercises }))
+        .catch(error => this.setState({ errMsg: handleError(error, 'Error during applying: ') }))
+        .finally(() => this.setState({ loading: false }));  
     }
 
     render = () => {
