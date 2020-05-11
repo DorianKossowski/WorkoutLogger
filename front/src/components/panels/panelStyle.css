@@ -24,19 +24,33 @@
     padding: 10px 0;
 }
 
-.workoutPanelContentTrain {
+.workoutPanelContentClickBorderR {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px 0;
     background: #1a1c1f;
     border-right: 2px solid #0f1011;
+    color: #c0c2c4!important;
+    text-decoration: none!important;
+    cursor: pointer;
 }
 
-.workoutPanelContentStats {
+.workoutPanelContentClick {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px 0;
     background: #1a1c1f;
+    color: #c0c2c4!important;
+    text-decoration: none!important;
+    cursor: pointer;
+}
+
+.workoutPanelContentClick:hover {
+    color: #a4a6a8!important;
+}
+
+.displayInherit {
+    display: inherit;
 }

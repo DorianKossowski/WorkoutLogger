@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import api from '../../helpers/Api.js';
 import handleError from '../../helpers/ErrorHandlingService';
-import ModifySingleElementModal from './ModifySingleElementModal';
-import DeleteSingleElementModal from './DeleteSingleElementModal.js';
+import ModifySingleElementModal from '../modals/ModifySingleElementModal';
+import DeleteSingleElementModal from '../modals/DeleteSingleElementModal.js';
 
 import './singleElementStyle.css';
 

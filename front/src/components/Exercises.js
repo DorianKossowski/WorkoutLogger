@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import api from '../helpers/Api.js';
-import ExercisePanel from './helpers/panels/ExercisePanel';
-import AddExerciseModal from './AddExerciseModal';
+import ExercisePanel from './panels/ExercisePanel';
+import AddExerciseModal from './modals/AddExerciseModal';
 import OvalLoader from './helpers/OvalLoader';
 import ErrorAlert from './helpers/ErrorAlert';
 import handleError from '../helpers/ErrorHandlingService';

@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap/';
 import { Formik,  Field, ErrorMessage } from 'formik';
 
-import api from '../helpers/Api';
-import ErrorAlert from './helpers/ErrorAlert';
-import handleError from '../helpers/ErrorHandlingService';
-import CheckBox from './helpers/CheckBox';
+import api from '../../helpers/Api';
+import ErrorAlert from '../helpers/ErrorAlert';
+import handleError from '../../helpers/ErrorHandlingService';
 
 
-class AddWorkoutModal extends Component {
+class AddExerciseModal extends Component {
 
     state = {
         show: false,
@@ -21,10 +20,10 @@ class AddWorkoutModal extends Component {
     render() {
         return (
             <>
-            <Button variant="outline-dark" onClick={this.handleShow}>Create new workout</Button>
+            <Button variant="outline-dark" onClick={this.handleShow}>Create new exercise</Button>
             <Modal show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Add workout</Modal.Title>
+                    <Modal.Title>Add exercise</Modal.Title>
                 </Modal.Header>
                 { this.getCreationForm() }
             </Modal>
@@ -37,29 +36,23 @@ class AddWorkoutModal extends Component {
             <>
             <ErrorAlert msg={this.state.errMsg}/>
             <Formik
-            initialErrors={{ name: '', exercisesId: ''}}
-            initialValues={{ name: '', exercisesId: [] }}
+            initialErrors={{ name: ''}}
+            initialValues={{ name: '' }}
             validate={this.validateFields()}
             onSubmit={this.handleSubmit()}
             >
             {({ handleSubmit, errors, isSubmitting, isValid }) => (
-                <Form>    
-                    <Modal.Body>
-                        <Field name='name'> 
-                        {({ field }) => (
-                            <>
+                <Form>
+                    <Field name='name'> 
+                    {({ field }) => (
+                        <Modal.Body>
                             <Form.Label className='labelStyle'>Name</Form.Label>
-                            <Form.Control name="name" type="text" placeholder="Workout name" 
+                            <Form.Control name="name" type="text" placeholder="Exercise name" 
                                 value={field.value} onChange={field.onChange}/>
                             <ErrorMessage className='errorMsgStyle' name="name" component="div"/>
-                            </>
-                        )}
-                        </Field>
-                        <Form.Label className='labelStyle'>Exercises</Form.Label>
-                        { this.props.exercises.map(exercise => <CheckBox key={exercise.id} name='exercisesId' 
-                            value={exercise.name} id={exercise.id}/>) }
-                        <ErrorMessage className='errorMsgStyle' name="exercisesId" component="div"/>
-                    </Modal.Body>
+                        </Modal.Body>
+                    )}
+                    </Field>
                     <Modal.Footer>
                         <Button type='submit' onClick={handleSubmit} disabled={isSubmitting}>Create</Button>
                     </Modal.Footer>
@@ -76,9 +69,6 @@ class AddWorkoutModal extends Component {
             if(!values.name) {
                 errors.name = 'Name is required';
             }
-            if(!values.exercisesId.length) {
-                errors.exercisesId = 'Select at least one exercise';
-            }
             return errors;
         };
     }
@@ -88,7 +78,7 @@ class AddWorkoutModal extends Component {
             this.setState({ errMsg: '' })
             api({
                 method: 'POST',
-                url: 'addWorkout',
+                url: 'addExercise',
                 data: { ...values }
             })
             .then(() => {
@@ -102,4 +92,4 @@ class AddWorkoutModal extends Component {
     }
 }
 
-export default AddWorkoutModal;
+export default AddExerciseModal;
