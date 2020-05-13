@@ -32,12 +32,15 @@ public class TrainingServiceImpl implements TrainingService {
     public TrainingDto createTraining(TrainingDto trainingDto, long workoutId) {
         Workout workout = workoutRepository.findById(workoutId)
                 .orElseThrow(() -> new InvalidArgumentException("Workout doesn't exists"));
-        long newTrainingId = trainingRepository.save(new Training(workout)).getId();
+        Training newTraining = trainingRepository.save(new Training(workout));
+        long id = newTraining.getId();
         trainingDto.getExercises().forEach(trainingExerciseDto ->
-                modelSetService.createSets(trainingExerciseDto.getSets(), newTrainingId, trainingExerciseDto.getId())
+                modelSetService.createSets(trainingExerciseDto.getSets(), id,
+                        trainingExerciseDto.getId())
         );
-        logger.debug(String.format("Training with id %s correctly created", newTrainingId));
-        trainingDto.setId(newTrainingId);
+        logger.debug(String.format("Training with id %s correctly created", id));
+        trainingDto.setId(id);
+        trainingDto.setDate(newTraining.getDate());
         return trainingDto;
     }
 
@@ -56,5 +59,11 @@ public class TrainingServiceImpl implements TrainingService {
             throw new InvalidArgumentException("Training doesn't exist");
         }
         return new TrainingDto(training);
+    }
+
+    @Override
+    public void deleteTraining(long id) {
+        trainingRepository.deleteById(id);
+        logger.debug(String.format("Training with id %s deleted correctly", id));
     }
 }

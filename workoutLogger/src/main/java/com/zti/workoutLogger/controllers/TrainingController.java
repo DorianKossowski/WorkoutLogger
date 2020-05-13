@@ -38,4 +38,9 @@ public class TrainingController {
     public TrainingDto addTraining(@RequestBody TrainingDto trainingDto, @PathVariable long workoutId) {
         return trainingService.createTraining(trainingDto, workoutId);
     }
+
+    @DeleteMapping("/trainings/delete/{trainingId}")
+    public void deleteTraining(@PathVariable long trainingId) {
+        trainingService.deleteTraining(trainingId);
+    }
 }

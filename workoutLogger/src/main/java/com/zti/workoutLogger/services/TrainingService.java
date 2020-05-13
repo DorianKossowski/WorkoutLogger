@@ -11,4 +11,6 @@ public interface TrainingService {
     List<TrainingDto> getTrainingsByWorkoutId(long workoutId);
 
     TrainingDto getTrainingById(long workoutId, long trainingId);
+
+    void deleteTraining(long id);
 }

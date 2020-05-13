@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap/';
 import _ from 'lodash';
+import { Redirect } from 'react-router-dom';
 
 import api from '../helpers/Api.js';
 import handleError from '../helpers/ErrorHandlingService';
@@ -8,6 +9,7 @@ import TrainingPanel from './panels/TrainingPanel';
 import ErrorAlert from './helpers/ErrorAlert';
 import OvalLoader from './helpers/OvalLoader';
 import TrainingStateManager from './helpers/TrainingStateManager';
+import DeleteSingleElementModal from './modals/DeleteSingleElementModal';
 
 class Training extends Component {
     trainingStateManager = new TrainingStateManager();
@@ -17,7 +19,8 @@ class Training extends Component {
         showModal: false,
         loading: false,
         errMsg: '',
-        trainingId: ''
+        trainingId: '',
+        trainingDate: ''
     }
 
     componentDidMount = () => {
@@ -36,7 +39,7 @@ class Training extends Component {
             method: 'GET',
             url: getUrl
         })
-        .then(data => this.setState({ trainingId: data.id, exercises: data.exercises }))
+        .then(data => this.setState({ trainingId: data.id, trainingDate: data.date, exercises: data.exercises }))
         .catch(error => this.setState({ errMsg: handleError(error, 'Error during getting: ') }))
         .finally(() => this.setState({ loading: false }));
     }
@@ -44,10 +47,35 @@ class Training extends Component {
     getExercisesRender = () => {
         return (
             <>
+            { this.state.trainingId ? this.renderHeader() : null }
             { this.state.exercises.map(exercise => <TrainingPanel key={ exercise.id } data={ exercise } postAction={ this.updateState }/>) }
             <Button variant="outline-dark" onClick={ this.applyState }>Apply</Button>
             <Button variant="outline-dark">Save</Button>
             </>
+        );
+    }
+
+    renderHeader = () => {
+        return (
+            <div className='singleElementHeader'>
+                <div className='singleElementHeaderLeft'>Date: {this.state.trainingDate}</div>
+                <div className='singleElementHeaderRight'>
+                    <DeleteSingleElementModal baseUrl={ this.getUrlBase } postAction={ this.getRedirect } 
+                        singleElement={{ id: this.state.trainingId }}/>
+                </div>
+            </div>
+        );
+    }
+
+    getUrlBase = () => {
+        return 'trainings';
+    }
+
+    getRedirect = () => {
+        const { workoutId } = this.props.match.params;
+        const redirectUrl = `/workouts/${ workoutId }`;
+        return (
+            <Redirect to={ redirectUrl }/>
         );
     }
 
@@ -77,7 +105,7 @@ class Training extends Component {
             url: applyUrl,
             data: { trainingId: this.state.trainingId, exercises: this.state.exercises }
         })
-        .then(data => this.setState({ trainingId: data.id, exercises: data.exercises }))
+        .then(data => this.setState({ trainingId: data.id, trainingDate: data.date, exercises: data.exercises }))
         .catch(error => this.setState({ errMsg: handleError(error, 'Error during applying: ') }))
         .finally(() => this.setState({ loading: false }));  
     }
