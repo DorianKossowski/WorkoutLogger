@@ -18,6 +18,7 @@ class MainViewContainer extends Component {
                         <AuthenticatedRoute exact path='/' component={ Exercises }/>
                         <AuthenticatedRoute path='/exercises/:singleElementId' component={ Exercise }/>
                         <AuthenticatedRoute path='/exercises' component={ Exercises }/>
+                        <AuthenticatedRoute path='/workouts/:workoutId/training/:trainingId' component={ Training }/>
                         <AuthenticatedRoute path='/workouts/:workoutId/training' component={ Training }/>
                         <AuthenticatedRoute path='/workouts/:singleElementId' component={ Workout }/>
                         <AuthenticatedRoute path='/workouts' component={ Workouts }/>

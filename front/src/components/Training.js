@@ -21,18 +21,22 @@ class Training extends Component {
     }
 
     componentDidMount = () => {
-        this.getExercises();
+        this.getTraining();
     }
 
-    getExercises = () => {
-        const { workoutId } = this.props.match.params;
+    getTraining = () => {
+        const { workoutId, trainingId } = this.props.match.params;
+        let getUrl = `workouts/${workoutId}/training/`;
+        if(trainingId) {
+            getUrl += trainingId;
+        }
         this.setState({ loading: true });
         this.setState({ errMsg: '' });
         api({
             method: 'GET',
-            url: `workouts/${ workoutId }/training/`
+            url: getUrl
         })
-        .then(data => this.setState({ exercises: data }))
+        .then(data => this.setState({ trainingId: data.id, exercises: data.exercises }))
         .catch(error => this.setState({ errMsg: handleError(error, 'Error during getting: ') }))
         .finally(() => this.setState({ loading: false }));
     }
@@ -60,6 +64,7 @@ class Training extends Component {
         
         let applyMethod;
         let applyUrl;
+        
         if(this.state.trainingId) {
             applyMethod = 'PUT';
             applyUrl = `workouts/${ workoutId }/training/${ this.state.trainingId }`
@@ -72,7 +77,7 @@ class Training extends Component {
             url: applyUrl,
             data: { trainingId: this.state.trainingId, exercises: this.state.exercises }
         })
-        .then(data => this.setState({ trainingId: data.trainingId, exercises: data.exercises }))
+        .then(data => this.setState({ trainingId: data.id, exercises: data.exercises }))
         .catch(error => this.setState({ errMsg: handleError(error, 'Error during applying: ') }))
         .finally(() => this.setState({ loading: false }));  
     }

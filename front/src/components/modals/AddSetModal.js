@@ -3,9 +3,7 @@ import { Modal, Button, Form } from 'react-bootstrap/';
 import { Formik,  Field, ErrorMessage } from 'formik';
 import { Col } from 'react-bootstrap';
 
-import api from '../../helpers/Api';
 import ErrorAlert from '../helpers/ErrorAlert';
-import handleError from '../../helpers/ErrorHandlingService';
 
 import '../panels/panelStyle.css';
 import './modalStyle.css';
