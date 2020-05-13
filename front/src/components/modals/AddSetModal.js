@@ -22,7 +22,7 @@ class AddSetModal extends Component {
     render() {
         return (
             <>
-            <Col xs lg='2' onClick={this.handleShow} className='workoutPanelContentClick'>Log</Col>
+            <Col xs='2' lg='2' onClick={this.handleShow} className='workoutPanelContentClick logButton'>Log</Col>
             <Modal show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Log</Modal.Title>

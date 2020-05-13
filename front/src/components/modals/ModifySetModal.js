@@ -23,7 +23,7 @@ class EditSetModal extends Component {
         const { reps, weight } = this.props.data;
         return (
             <>
-            <Col xs lg='2' onClick={this.handleShow} className='workoutPanelContentClickBorderR'>{reps} X {weight}kg</Col>
+            <Col xs='5' lg='2' onClick={this.handleShow} className='workoutPanelContentClickBorderR'>{reps} X {weight}kg</Col>
             <Modal show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Modify</Modal.Title>

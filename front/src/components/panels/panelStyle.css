@@ -51,6 +51,12 @@
     color: #a4a6a8!important;
 }
 
-.displayInherit {
+.displayInheritWithScroll {
     display: inherit;
+    overflow-x: auto;
+    padding: 0 !important;
+}
+
+.logButton {
+    background: #0f1011 !important;
 }

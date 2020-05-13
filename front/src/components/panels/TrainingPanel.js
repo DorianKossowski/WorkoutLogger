@@ -14,7 +14,7 @@ class TrainingPanel extends Component {
                     { this.props.data.name }
                 </Row>
                 <Row className='workoutPanelContent'>
-                    <Col lg className='displayInherit'>
+                    <Col xs lg className='displayInheritWithScroll'>
                         {this.props.data.sets.map(set => <ModifySetModal key={ `set${set.id}` } exerciseId={ this.props.data.id }
                             data={ set } postAction={ this.props.postAction }/>)}
                     </Col>
