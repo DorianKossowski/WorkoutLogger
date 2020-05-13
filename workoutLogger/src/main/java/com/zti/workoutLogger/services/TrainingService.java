@@ -9,4 +9,6 @@ public interface TrainingService {
     TrainingDto createTraining(TrainingDto trainingDto, long workoutId);
 
     List<TrainingDto> getTrainingsByWorkoutId(long workoutId);
+
+    TrainingDto getTrainingById(long workoutId, long trainingId);
 }

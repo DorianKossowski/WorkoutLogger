@@ -3,6 +3,7 @@ package com.zti.workoutLogger.models.dto;
 import com.zti.workoutLogger.models.Training;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,9 +18,23 @@ public class TrainingDto {
     public TrainingDto(Training training) {
         this.id = training.getId();
         this.date = training.getDate();
-        this.exercises = training.getWorkout().getExercises().stream()
-                .map(TrainingExerciseDto::new)
-                .collect(Collectors.toList());
+        this.exercises = getExercises(training);
+    }
+
+    private List<TrainingExerciseDto> getExercises(Training training) {
+        List<TrainingExerciseDto> exercises = new ArrayList<>();
+        training.getWorkout().getExercises().forEach(exercise -> {
+            List<ModelSetDto> modelSetDtos = training.getSets().stream()
+                    .filter(modelSet -> modelSet.getExercise().equals(exercise))
+                    .map(ModelSetDto::new)
+                    .collect(Collectors.toList());
+            exercises.add(new TrainingExerciseDto(exercise, modelSetDtos));
+        });
+        return exercises;
+    }
+
+    public TrainingDto(List<TrainingExerciseDto> trainingExercises) {
+        this.exercises = trainingExercises;
     }
 
     public long getId() {

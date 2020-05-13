@@ -130,11 +130,11 @@ class WorkoutsControllerTest extends WorkoutLoggerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(workoutDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.workoutDto.id").value(workoutDto.getId()))
-                .andExpect(jsonPath("$.workoutDto.name").value(workoutDto.getName()))
-                .andExpect(jsonPath("$.workoutDto.exercisesId[0]").value(EXERCISE_1.getId()))
-                .andExpect(jsonPath("$.workoutDto.exercises[0].id").value(EXERCISE_1.getId()))
-                .andExpect(jsonPath("$.workoutDto.exercises[0].name").value(EXERCISE_1.getName()));
+                .andExpect(jsonPath("$.workout.id").value(workoutDto.getId()))
+                .andExpect(jsonPath("$.workout.name").value(workoutDto.getName()))
+                .andExpect(jsonPath("$.workout.exercisesId[0]").value(EXERCISE_1.getId()))
+                .andExpect(jsonPath("$.workout.exercises[0].id").value(EXERCISE_1.getId()))
+                .andExpect(jsonPath("$.workout.exercises[0].name").value(EXERCISE_1.getName()));
     }
 
     private WorkoutDto getWorkoutDto(Exercise exercise) {

@@ -8,9 +8,15 @@ import java.util.List;
 public class TrainingExerciseDto {
     private long id;
     private String name;
-    private List<SetDto> sets;
+    private List<ModelSetDto> sets;
 
     public TrainingExerciseDto() {
+    }
+
+    public TrainingExerciseDto(Exercise exercise, List<ModelSetDto> sets) {
+        this.id = exercise.getId();
+        this.name = exercise.getName();
+        this.sets = sets;
     }
 
     public TrainingExerciseDto(Exercise exercise) {
@@ -35,11 +41,11 @@ public class TrainingExerciseDto {
         this.name = name;
     }
 
-    public List<SetDto> getSets() {
+    public List<ModelSetDto> getSets() {
         return sets;
     }
 
-    public void setSets(List<SetDto> sets) {
+    public void setSets(List<ModelSetDto> sets) {
         this.sets = sets;
     }
 }

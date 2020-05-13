@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 public class Training {
@@ -18,6 +19,10 @@ public class Training {
     @ManyToOne
     @JoinColumn(name = "workoutId", nullable = false)
     private Workout workout;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL)
+    private Set<ModelSet> sets;
 
     public Training() {
     }
@@ -49,5 +54,13 @@ public class Training {
 
     public void setWorkout(Workout workout) {
         this.workout = workout;
+    }
+
+    public Set<ModelSet> getSets() {
+        return sets;
+    }
+
+    public void setSets(Set<ModelSet> sets) {
+        this.sets = sets;
     }
 }

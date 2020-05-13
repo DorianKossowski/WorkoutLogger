@@ -21,11 +21,17 @@ public class TrainingController {
     private TrainingService trainingService;
 
     @GetMapping("/workouts/{workoutId}/training")
-    public List<TrainingExerciseDto> getNewTrainingExercises(@PathVariable long workoutId) {
+    public TrainingDto getNewTraining(@PathVariable long workoutId) {
         Set<Exercise> exercises = workoutService.getWorkoutById(workoutId).getWorkout().getExercises();
-        return exercises.stream()
+        List<TrainingExerciseDto> trainingExercises = exercises.stream()
                 .map(TrainingExerciseDto::new)
                 .collect(Collectors.toList());
+        return new TrainingDto(trainingExercises);
+    }
+
+    @GetMapping("/workouts/{workoutId}/training/{trainingId}")
+    public TrainingDto getTraining(@PathVariable long workoutId, @PathVariable long trainingId) {
+        return trainingService.getTrainingById(workoutId, trainingId);
     }
 
     @PostMapping("/workouts/{workoutId}/addTraining")

@@ -84,6 +84,7 @@ class TrainingServiceImplTest extends WorkoutLoggerServiceTests {
 
     private Exercise getNewExercise(ExerciseDto exerciseDto) {
         Exercise exercise = new Exercise();
+        exercise.setId(exerciseDto.getId());
         exercise.setName(exerciseDto.getName());
         exercise.setUser(authenticatedUserGetter.get());
         return exercise;

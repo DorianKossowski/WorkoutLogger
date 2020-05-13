@@ -1,9 +1,20 @@
 package com.zti.workoutLogger.models.dto;
 
-public class SetDto {
+import com.zti.workoutLogger.models.ModelSet;
+
+public class ModelSetDto {
     private long id;
     private int reps;
     private int weight;
+
+    public ModelSetDto() {
+    }
+
+    public ModelSetDto(ModelSet modelSet) {
+        this.id = modelSet.getId();
+        this.reps = modelSet.getReps();
+        this.weight = modelSet.getWeight();
+    }
 
     public long getId() {
         return id;

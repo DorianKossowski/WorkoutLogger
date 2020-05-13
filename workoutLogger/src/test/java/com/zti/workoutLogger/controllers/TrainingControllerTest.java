@@ -46,9 +46,9 @@ class TrainingControllerTest extends WorkoutLoggerControllerTest {
 
         mvc.perform(get("/workouts/3/training"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(EXERCISE_1.getId()))
-                .andExpect(jsonPath("$[0].name").value(EXERCISE_1.getName()))
-                .andExpect(jsonPath("$[0].sets").isEmpty());
+                .andExpect(jsonPath("$.exercises[0].id").value(EXERCISE_1.getId()))
+                .andExpect(jsonPath("$.exercises[0].name").value(EXERCISE_1.getName()))
+                .andExpect(jsonPath("$.exercises[0].sets").isEmpty());
     }
 
     private WorkoutDto getWorkoutDto(Exercise exercise) {

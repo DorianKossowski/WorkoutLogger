@@ -33,6 +33,10 @@ public class Exercise {
     )
     private Set<Workout> workouts = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
+    private Set<ModelSet> sets;
+
     public Exercise() {
     }
 
@@ -66,5 +70,13 @@ public class Exercise {
 
     public void setWorkouts(Set<Workout> workouts) {
         this.workouts = workouts;
+    }
+
+    public Set<ModelSet> getSets() {
+        return sets;
+    }
+
+    public void setSets(Set<ModelSet> sets) {
+        this.sets = sets;
     }
 }

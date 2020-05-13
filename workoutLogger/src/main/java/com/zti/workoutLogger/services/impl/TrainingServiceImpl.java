@@ -5,6 +5,7 @@ import com.zti.workoutLogger.models.Workout;
 import com.zti.workoutLogger.models.dto.TrainingDto;
 import com.zti.workoutLogger.repositories.TrainingRepository;
 import com.zti.workoutLogger.repositories.WorkoutRepository;
+import com.zti.workoutLogger.services.ModelSetService;
 import com.zti.workoutLogger.services.TrainingService;
 import com.zti.workoutLogger.utils.exceptions.InvalidArgumentException;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,13 +24,20 @@ public class TrainingServiceImpl implements TrainingService {
     private TrainingRepository trainingRepository;
     @Autowired
     private WorkoutRepository workoutRepository;
+    @Autowired
+    private ModelSetService modelSetService;
 
+    @Transactional
     @Override
     public TrainingDto createTraining(TrainingDto trainingDto, long workoutId) {
         Workout workout = workoutRepository.findById(workoutId)
                 .orElseThrow(() -> new InvalidArgumentException("Workout doesn't exists"));
-        long id = trainingRepository.save(new Training(workout)).getId();
-        logger.debug(String.format("Training with id %s correctly created", id));
+        long newTrainingId = trainingRepository.save(new Training(workout)).getId();
+        trainingDto.getExercises().forEach(trainingExerciseDto ->
+                modelSetService.createSets(trainingExerciseDto.getSets(), newTrainingId, trainingExerciseDto.getId())
+        );
+        logger.debug(String.format("Training with id %s correctly created", newTrainingId));
+        trainingDto.setId(newTrainingId);
         return trainingDto;
     }
 
@@ -39,4 +48,13 @@ public class TrainingServiceImpl implements TrainingService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public TrainingDto getTrainingById(long workoutId, long trainingId) {
+        Training training = trainingRepository.findById(trainingId).orElseThrow(
+                () -> new InvalidArgumentException(String.format("Training with id %s doesn't exist", trainingId)));
+        if (training.getWorkout().getId() != workoutId) {
+            throw new InvalidArgumentException("Training doesn't exist");
+        }
+        return new TrainingDto(training);
+    }
 }
