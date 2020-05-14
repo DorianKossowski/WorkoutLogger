@@ -20,7 +20,8 @@ class Training extends Component {
         loading: false,
         errMsg: '',
         trainingId: '',
-        trainingDate: ''
+        trainingDate: '',
+        redirect: false
     }
 
     componentDidMount = () => {
@@ -48,9 +49,17 @@ class Training extends Component {
         return (
             <>
             { this.state.trainingId ? this.renderHeader() : null }
+            { _.isEmpty(this.state.exercises) ? null : this.renderContent() }
+            </>
+        );
+    }
+
+    renderContent = () => {
+        return (
+            <>
             { this.state.exercises.map(exercise => <TrainingPanel key={ exercise.id } data={ exercise } postAction={ this.updateState }/>) }
             <Button variant="outline-dark" onClick={ this.applyState }>Apply</Button>
-            <Button variant="outline-dark">Save</Button>
+            <Button variant="outline-dark" onClick={ this.saveState }>Save</Button>
             </>
         );
     }
@@ -85,7 +94,7 @@ class Training extends Component {
         });
     }
 
-    applyState = () => {
+    applyState = (save = false) => {
         const { workoutId } = this.props.match.params;
         this.setState({ loading: true });
         this.setState({ errMsg: '' });
@@ -100,14 +109,23 @@ class Training extends Component {
             applyMethod = 'POST';
             applyUrl = `workouts/${ workoutId }/addTraining`
         }
-        api({
+        return api({
             method: applyMethod,
             url: applyUrl,
             data: { trainingId: this.state.trainingId, exercises: this.state.exercises }
         })
-        .then(data => this.setState({ trainingId: data.id, trainingDate: data.date, exercises: data.exercises }))
+        .then(data => {
+            this.setState({ trainingId: data.id, trainingDate: data.date, exercises: data.exercises });
+            if(save === true) {
+                this.setState({ redirect: true });
+            }
+        })
         .catch(error => this.setState({ errMsg: handleError(error, 'Error during applying: ') }))
         .finally(() => this.setState({ loading: false }));  
+    }
+
+    saveState = () => {
+        this.applyState(true)
     }
 
     render = () => {
@@ -115,7 +133,8 @@ class Training extends Component {
             <div>
                 <ErrorAlert msg={this.state.errMsg}/>
                 <h1>Training</h1>
-                {this.state.loading ? <OvalLoader/> : this.getExercisesRender()}
+                { this.state.loading ? <OvalLoader/> : this.getExercisesRender() }
+                { this.state.redirect ? this.getRedirect() : null }
             </div>
         );
     }
