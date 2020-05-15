@@ -20,12 +20,15 @@
     "react-scripts": "^3.4.0",
     "styled-components": "^5.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "cross-env": "^7.0.2"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build-prd": "cross-env GENERATE_SOURCEMAP=false react-scripts build"
   },
   "browserslist": {
     "production": [

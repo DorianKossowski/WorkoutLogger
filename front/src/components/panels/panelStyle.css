@@ -1,6 +1,6 @@
 .workoutPanelWrapper {
     border: 2px solid #dee2e6;
-    margin: 10px;
+    margin: 10px auto;
 }
 
 .workoutPanelHeader {
