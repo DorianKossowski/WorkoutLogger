@@ -46,18 +46,14 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public List<TrainingDto> getTrainingsByWorkoutId(long workoutId) {
-        return trainingRepository.findAllByWorkoutId(workoutId).stream()
+        return trainingRepository.findAllByWorkoutIdOrderByDateDesc(workoutId).stream()
                 .map(TrainingDto::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     public TrainingDto getTrainingById(long workoutId, long trainingId) {
-        Training training = trainingRepository.findById(trainingId).orElseThrow(
-                () -> new InvalidArgumentException(String.format("Training with id %s doesn't exist", trainingId)));
-        if (training.getWorkout().getId() != workoutId) {
-            throw new InvalidArgumentException("Training doesn't exist");
-        }
+        Training training = getTrainingWithValidation(workoutId, trainingId);
         return new TrainingDto(training);
     }
 
@@ -65,5 +61,25 @@ public class TrainingServiceImpl implements TrainingService {
     public void deleteTraining(long id) {
         trainingRepository.deleteById(id);
         logger.debug(String.format("Training with id %s deleted correctly", id));
+    }
+
+    @Transactional
+    @Override
+    public TrainingDto editTraining(TrainingDto trainingDto, long workoutId, long trainingId) {
+        getTrainingWithValidation(workoutId, trainingId);
+        trainingDto.getExercises().forEach(trainingExerciseDto ->
+                modelSetService.editSets(trainingExerciseDto.getSets(), trainingId,
+                        trainingExerciseDto.getId())
+        );
+        return trainingDto;
+    }
+
+    private Training getTrainingWithValidation(long workoutId, long trainingId) {
+        Training training = trainingRepository.findById(trainingId).orElseThrow(
+                () -> new InvalidArgumentException(String.format("Training with id %s doesn't exist", trainingId)));
+        if (training.getWorkout().getId() != workoutId) {
+            throw new InvalidArgumentException("Training doesn't exist");
+        }
+        return training;
     }
 }

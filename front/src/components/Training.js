@@ -112,7 +112,7 @@ class Training extends Component {
         return api({
             method: applyMethod,
             url: applyUrl,
-            data: { trainingId: this.state.trainingId, exercises: this.state.exercises }
+            data: { id: this.state.trainingId, date: this.state.trainingDate, exercises: this.state.exercises }
         })
         .then(data => {
             this.setState({ trainingId: data.id, trainingDate: data.date, exercises: data.exercises });

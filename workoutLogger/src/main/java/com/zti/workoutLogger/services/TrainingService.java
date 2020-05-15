@@ -13,4 +13,6 @@ public interface TrainingService {
     TrainingDto getTrainingById(long workoutId, long trainingId);
 
     void deleteTraining(long id);
+
+    TrainingDto editTraining(TrainingDto trainingDto, long workoutId, long trainingId);
 }

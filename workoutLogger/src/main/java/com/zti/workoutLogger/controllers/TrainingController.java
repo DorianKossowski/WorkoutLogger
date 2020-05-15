@@ -8,6 +8,7 @@ import com.zti.workoutLogger.services.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class TrainingController {
     public TrainingDto getNewTraining(@PathVariable long workoutId) {
         Set<Exercise> exercises = workoutService.getWorkoutById(workoutId).getWorkout().getExercises();
         List<TrainingExerciseDto> trainingExercises = exercises.stream()
+                .sorted(Comparator.comparing(Exercise::getName))
                 .map(TrainingExerciseDto::new)
                 .collect(Collectors.toList());
         return new TrainingDto(trainingExercises);
@@ -37,6 +39,12 @@ public class TrainingController {
     @PostMapping("/workouts/{workoutId}/addTraining")
     public TrainingDto addTraining(@RequestBody TrainingDto trainingDto, @PathVariable long workoutId) {
         return trainingService.createTraining(trainingDto, workoutId);
+    }
+
+    @PutMapping("/workouts/{workoutId}/training/{trainingId}")
+    public TrainingDto editTraining(@RequestBody TrainingDto trainingDto, @PathVariable long workoutId,
+                                    @PathVariable long trainingId) {
+        return trainingService.editTraining(trainingDto, workoutId, trainingId);
     }
 
     @DeleteMapping("/trainings/delete/{trainingId}")

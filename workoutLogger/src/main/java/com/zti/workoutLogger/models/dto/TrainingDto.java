@@ -1,10 +1,10 @@
 package com.zti.workoutLogger.models.dto;
 
+import com.zti.workoutLogger.models.Exercise;
 import com.zti.workoutLogger.models.Training;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TrainingDto {
@@ -22,15 +22,18 @@ public class TrainingDto {
     }
 
     private List<TrainingExerciseDto> getExercises(Training training) {
-        List<TrainingExerciseDto> exercises = new ArrayList<>();
-        training.getWorkout().getExercises().forEach(exercise -> {
+        List<TrainingExerciseDto> exerciseDtos = new ArrayList<>();
+        Set<Exercise> exercises = training.getWorkout().getExercises().stream()
+                .sorted(Comparator.comparing(Exercise::getName))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        exercises.forEach(exercise -> {
             List<ModelSetDto> modelSetDtos = training.getSets().stream()
                     .filter(modelSet -> modelSet.getExercise().equals(exercise))
                     .map(ModelSetDto::new)
                     .collect(Collectors.toList());
-            exercises.add(new TrainingExerciseDto(exercise, modelSetDtos));
+            exerciseDtos.add(new TrainingExerciseDto(exercise, modelSetDtos));
         });
-        return exercises;
+        return exerciseDtos;
     }
 
     public TrainingDto(List<TrainingExerciseDto> trainingExercises) {

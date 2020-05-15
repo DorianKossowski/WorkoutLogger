@@ -3,8 +3,11 @@ package com.zti.workoutLogger.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Workout {
@@ -55,7 +58,9 @@ public class Workout {
     }
 
     public void setExercises(Set<Exercise> exercises) {
-        this.exercises = exercises;
+        this.exercises = exercises.stream()
+                .sorted(Comparator.comparing(Exercise::getName))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public Set<Training> getTrainings() {

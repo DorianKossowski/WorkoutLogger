@@ -72,4 +72,12 @@ public class ModelSet {
     public void setWeight(int weight) {
         this.weight = weight;
     }
+
+    @PreRemove
+    private void dismissSetFromTrainingAndExercise() {
+        training.getSets().remove(this);
+        exercise.getSets().remove(this);
+        training = null;
+        exercise = null;
+    }
 }
