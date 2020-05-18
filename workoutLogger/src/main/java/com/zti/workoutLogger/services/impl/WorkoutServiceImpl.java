@@ -1,5 +1,6 @@
 package com.zti.workoutLogger.services.impl;
 
+import com.zti.workoutLogger.models.Training;
 import com.zti.workoutLogger.models.Workout;
 import com.zti.workoutLogger.models.dto.TrainingDto;
 import com.zti.workoutLogger.models.dto.WorkoutDto;
@@ -17,7 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,7 +105,17 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
+    @Transactional
     public void deleteWorkout(long id) {
+        Workout workout = workoutRepository.findById(id).orElseThrow(
+                () -> new InvalidArgumentException("Workout doesn't exist"));
+
+        for (Iterator<Training> it = workout.getTrainings().iterator(); it.hasNext(); ) {
+            Training training = it.next();
+            it.remove();
+            trainingService.deleteTraining(training.getId());
+        }
+        
         workoutRepository.deleteById(id);
         logger.debug(String.format("Workout with id %s deleted correctly", id));
     }

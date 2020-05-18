@@ -4,6 +4,7 @@ import com.zti.workoutLogger.models.Exercise;
 import com.zti.workoutLogger.models.dto.ExerciseDto;
 import com.zti.workoutLogger.repositories.ExerciseRepository;
 import com.zti.workoutLogger.services.ExerciseService;
+import com.zti.workoutLogger.services.ModelSetService;
 import com.zti.workoutLogger.services.WorkoutService;
 import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
@@ -29,6 +30,8 @@ public class ExerciseServiceImpl implements ExerciseService {
     private ExerciseRepository exerciseRepository;
     @Autowired
     private WorkoutService workoutService;
+    @Autowired
+    private ModelSetService modelSetService;
 
     @Override
     public List<ExerciseDto> getAllExercisesByUserId(long userId) {
@@ -94,6 +97,8 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public void deleteExercise(long id) {
         Exercise exerciseWithValidation = getExerciseWithValidation(id);
+
+        modelSetService.deleteSets(exerciseWithValidation.getSets());
         exerciseWithValidation.getWorkouts().forEach(workout -> {
             if (workout.getExercises().size() == 1) {
                 workoutService.deleteWorkout(workout.getId());

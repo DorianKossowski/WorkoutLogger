@@ -59,6 +59,10 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public void deleteTraining(long id) {
+        Training training = trainingRepository.findById(id).orElseThrow(
+                () -> new InvalidArgumentException(String.format("Training with id %s doesn't exist", id)));
+
+        modelSetService.deleteSets(training.getSets());
         trainingRepository.deleteById(id);
         logger.debug(String.format("Training with id %s deleted correctly", id));
     }

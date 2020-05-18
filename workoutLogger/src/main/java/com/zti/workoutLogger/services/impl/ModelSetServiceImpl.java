@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collector;
@@ -123,6 +124,15 @@ public class ModelSetServiceImpl implements ModelSetService {
         setToUpdate.setWeight(modelSetDto.getWeight());
         modelSetRepository.save(setToUpdate);
         logger.debug(String.format("Set with id %s correctly updated", setDtoId));
+    }
+
+    @Override
+    public void deleteSets(Set<ModelSet> sets) {
+        for (Iterator<ModelSet> it = sets.iterator(); it.hasNext(); ) {
+            ModelSet modelSet = it.next();
+            it.remove();
+            deleteSet(modelSet.getId());
+        }
     }
 
     private void deleteSet(long id) {
