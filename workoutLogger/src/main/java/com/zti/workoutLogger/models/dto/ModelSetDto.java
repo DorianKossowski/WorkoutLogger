@@ -5,7 +5,7 @@ import com.zti.workoutLogger.models.ModelSet;
 public class ModelSetDto {
     private long id;
     private int reps;
-    private int weight;
+    private float weight;
 
     public ModelSetDto() {
     }
@@ -32,11 +32,11 @@ public class ModelSetDto {
         this.reps = reps;
     }
 
-    public int getWeight() {
+    public float getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 }
