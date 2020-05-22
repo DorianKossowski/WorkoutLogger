@@ -9,6 +9,7 @@ class WorkoutPanel extends Component {
     render() {
         const linkToTrain = '/workouts/' + this.props.data.id + '/training';
         const linkToManage = '/workouts/' + this.props.data.id;
+        const lastDate = this.props.data.lastDate ? this.props.data.lastDate : ' -';
         return (
             <Container fluid className='workoutPanelWrapper'>
                 <Row className='workoutPanelHeader'>
@@ -16,7 +17,7 @@ class WorkoutPanel extends Component {
                 </Row>
                 <Row className='workoutPanelContent'>
                     <Col lg className='workoutPanelContentSimple'>{ this.getExercises(this.props.data.exercises) }</Col>
-                    <Col xs lg='2' className='workoutPanelContentSimple'>Last: 05.05.2020</Col>
+                    <Col xs lg='2' className='workoutPanelContentSimple'>Last: { lastDate }</Col>
                     <LinkContainer to={ linkToTrain }><Col xs lg='2' as='a' className='workoutPanelContentClickBorderR'>Train</Col></LinkContainer>
                     <LinkContainer to={ linkToManage }><Col xs lg='2' as='a' className='workoutPanelContentClick'>Manage</Col></LinkContainer>
                 </Row>

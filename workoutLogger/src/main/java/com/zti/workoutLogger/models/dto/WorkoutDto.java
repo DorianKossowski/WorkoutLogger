@@ -3,6 +3,7 @@ package com.zti.workoutLogger.models.dto;
 import com.zti.workoutLogger.models.Exercise;
 import com.zti.workoutLogger.models.Workout;
 
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,7 @@ public class WorkoutDto {
     private String name;
     private Set<Long> exercisesId;
     private Set<Exercise> exercises;
+    private LocalDate lastDate;
 
     public WorkoutDto() {
     }
@@ -25,6 +27,7 @@ public class WorkoutDto {
         this.name = workout.getName();
         this.exercises = workout.getExercises();
         this.exercisesId = workout.getExercises().stream().map(Exercise::getId).collect(Collectors.toSet());
+        this.lastDate = workout.getLastDate();
     }
 
     public long getId() {
@@ -57,5 +60,13 @@ public class WorkoutDto {
 
     public void setExercises(Set<Exercise> exercises) {
         this.exercises = exercises;
+    }
+
+    public LocalDate getLastDate() {
+        return lastDate;
+    }
+
+    public void setLastDate(LocalDate lastDate) {
+        this.lastDate = lastDate;
     }
 }

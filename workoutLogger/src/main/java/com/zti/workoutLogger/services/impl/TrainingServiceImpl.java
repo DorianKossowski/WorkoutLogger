@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,8 @@ public class TrainingServiceImpl implements TrainingService {
         Workout workout = workoutRepository.findById(workoutId)
                 .orElseThrow(() -> new InvalidArgumentException("Workout doesn't exists"));
         Training newTraining = trainingRepository.save(new Training(workout));
+        workout.setLastDate(LocalDate.now());
+        workoutRepository.save(workout);
         long id = newTraining.getId();
         trainingDto.getExercises().forEach(trainingExerciseDto ->
                 modelSetService.createSets(trainingExerciseDto.getSets(), id,

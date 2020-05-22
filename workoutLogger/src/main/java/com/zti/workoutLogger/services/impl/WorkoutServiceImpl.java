@@ -42,7 +42,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     public List<WorkoutDto> getAllWorkoutsByUserId(long userId) {
         return workoutRepository.findAllByUserId(userId).stream()
                 .map(WorkoutDto::new)
-                .sorted(Comparator.comparing(WorkoutDto::getName))
+                .sorted(Comparator.comparing(WorkoutDto::getLastDate, Comparator.nullsLast(Comparator.naturalOrder())))
                 .collect(Collectors.toList());
     }
 
@@ -115,7 +115,7 @@ public class WorkoutServiceImpl implements WorkoutService {
             it.remove();
             trainingService.deleteTraining(training.getId());
         }
-        
+
         workoutRepository.deleteById(id);
         logger.debug(String.format("Workout with id %s deleted correctly", id));
     }
