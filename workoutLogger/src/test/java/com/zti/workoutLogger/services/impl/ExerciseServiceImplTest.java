@@ -3,6 +3,7 @@ package com.zti.workoutLogger.services.impl;
 import com.zti.workoutLogger.models.Exercise;
 import com.zti.workoutLogger.models.User;
 import com.zti.workoutLogger.models.dto.ExerciseDto;
+import com.zti.workoutLogger.models.dto.ExerciseWithResultsDto;
 import com.zti.workoutLogger.models.dto.UserDto;
 import com.zti.workoutLogger.models.dto.WorkoutDto;
 import com.zti.workoutLogger.repositories.ExerciseRepository;
@@ -147,9 +148,9 @@ class ExerciseServiceImplTest extends WorkoutLoggerServiceTests {
     void shouldGetExercisesById() {
         long newExerciseId = exerciseService.createExercise(new ExerciseDto(NAME)).getId();
 
-        ExerciseDto exerciseDto = exerciseService.getExerciseById(newExerciseId);
+        ExerciseWithResultsDto dto = exerciseService.getExerciseById(newExerciseId);
 
-        assertThat(exerciseDto.getName()).isEqualTo(NAME);
+        assertThat(dto.getExercise().getName()).isEqualTo(NAME);
     }
 
     @Test

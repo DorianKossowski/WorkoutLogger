@@ -73,6 +73,14 @@ public class ModelSet {
         this.weight = weight;
     }
 
+    public float getVolume() {
+        return this.reps * this.weight;
+    }
+
+    public String print() {
+        return this.reps + " X " + this.weight + "kg";
+    }
+
     @PreRemove
     private void dismissSetFromTrainingAndExercise() {
         training.getSets().remove(this);

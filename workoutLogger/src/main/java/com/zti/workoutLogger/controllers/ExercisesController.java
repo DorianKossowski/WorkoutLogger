@@ -1,6 +1,7 @@
 package com.zti.workoutLogger.controllers;
 
 import com.zti.workoutLogger.models.dto.ExerciseDto;
+import com.zti.workoutLogger.models.dto.ExerciseWithResultsDto;
 import com.zti.workoutLogger.services.ExerciseService;
 import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ExercisesController {
     }
 
     @GetMapping("/exercises/{id}")
-    public ExerciseDto getExercise(@PathVariable long id) {
+    public ExerciseWithResultsDto getExercise(@PathVariable long id) {
         return exerciseService.getExerciseById(id);
     }
 

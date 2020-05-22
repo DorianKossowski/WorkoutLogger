@@ -1,7 +1,11 @@
 package com.zti.workoutLogger.services.impl;
 
 import com.zti.workoutLogger.models.Exercise;
+import com.zti.workoutLogger.models.ModelSet;
+import com.zti.workoutLogger.models.Training;
 import com.zti.workoutLogger.models.dto.ExerciseDto;
+import com.zti.workoutLogger.models.dto.ExerciseWithResultsDto;
+import com.zti.workoutLogger.models.dto.ResultDto;
 import com.zti.workoutLogger.repositories.ExerciseRepository;
 import com.zti.workoutLogger.services.ExerciseService;
 import com.zti.workoutLogger.services.ModelSetService;
@@ -16,9 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public class ExerciseServiceImpl implements ExerciseService {
@@ -68,8 +73,16 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public ExerciseDto getExerciseById(long id) {
-        return new ExerciseDto(getExerciseWithValidation(id));
+    public ExerciseWithResultsDto getExerciseById(long id) {
+        Exercise exercise = getExerciseWithValidation(id);
+        Set<ModelSet> sets = exercise.getSets();
+        Map<Training, List<ModelSet>> setsByTraining = sets.stream()
+                .collect(groupingBy(ModelSet::getTraining));
+        Set<ResultDto> results = setsByTraining.entrySet().stream()
+                .map(setByTraining -> new ResultDto(setByTraining.getKey(), setByTraining.getValue()))
+                .sorted(Comparator.comparing(ResultDto::getDate).reversed())
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        return new ExerciseWithResultsDto(new ExerciseDto(exercise), results);
     }
 
     private Exercise getExerciseWithValidation(long id) {

@@ -3,6 +3,7 @@ package com.zti.workoutLogger.controllers;
 import com.zti.workoutLogger.models.Exercise;
 import com.zti.workoutLogger.models.User;
 import com.zti.workoutLogger.models.dto.ExerciseDto;
+import com.zti.workoutLogger.models.dto.ExerciseWithResultsDto;
 import com.zti.workoutLogger.services.ExerciseService;
 import com.zti.workoutLogger.utils.auth.AuthenticatedUserGetter;
 import com.zti.workoutLogger.utils.exceptions.AlreadyExistsException;
@@ -117,15 +118,14 @@ class ExercisesControllerTest extends WorkoutLoggerControllerTest {
         exercise.setUser(INIT_USER);
         exercise.setName("name");
 
-        ExerciseDto result = new ExerciseDto(exercise);
-        when(exerciseService.getExerciseById(anyLong())).thenReturn(result);
+        ExerciseWithResultsDto dto = new ExerciseWithResultsDto(new ExerciseDto(exercise), Collections.emptySet());
+        when(exerciseService.getExerciseById(anyLong())).thenReturn(dto);
 
         mvc.perform(get("/exercises/2")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(result)))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(exercise.getId()))
-                .andExpect(jsonPath("$.name").value(exercise.getName()));
+                .andExpect(jsonPath("$.exercise.id").value(exercise.getId()))
+                .andExpect(jsonPath("$.exercise.name").value(exercise.getName()));
     }
 
     @Test

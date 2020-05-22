@@ -1,6 +1,7 @@
 package com.zti.workoutLogger.services;
 
 import com.zti.workoutLogger.models.dto.ExerciseDto;
+import com.zti.workoutLogger.models.dto.ExerciseWithResultsDto;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface ExerciseService {
 
     ExerciseDto createExercise(ExerciseDto newExerciseDto);
 
-    ExerciseDto getExerciseById(long id);
+    ExerciseWithResultsDto getExerciseById(long id);
 
     ExerciseDto editExercise(ExerciseDto exerciseDto, long id);
 

@@ -38,7 +38,7 @@ public class Exercise {
     private Set<Workout> workouts = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "exercise", cascade = CascadeType.ALL)
     private Set<ModelSet> sets;
 
     public Exercise() {
