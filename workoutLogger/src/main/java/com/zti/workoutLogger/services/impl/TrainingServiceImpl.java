@@ -3,6 +3,8 @@ package com.zti.workoutLogger.services.impl;
 import com.zti.workoutLogger.models.Training;
 import com.zti.workoutLogger.models.Workout;
 import com.zti.workoutLogger.models.dto.TrainingDto;
+import com.zti.workoutLogger.models.dto.TrainingExerciseDto;
+import com.zti.workoutLogger.repositories.ExerciseRepository;
 import com.zti.workoutLogger.repositories.TrainingRepository;
 import com.zti.workoutLogger.repositories.WorkoutRepository;
 import com.zti.workoutLogger.services.ModelSetService;
@@ -18,6 +20,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +30,8 @@ public class TrainingServiceImpl implements TrainingService {
     private TrainingRepository trainingRepository;
     @Autowired
     private WorkoutRepository workoutRepository;
+    @Autowired
+    private ExerciseRepository exerciseRepository;
     @Autowired
     private ModelSetService modelSetService;
 
@@ -39,10 +44,15 @@ public class TrainingServiceImpl implements TrainingService {
         workout.setLastDate(LocalDate.now());
         workoutRepository.save(workout);
         long id = newTraining.getId();
-        trainingDto.getExercises().forEach(trainingExerciseDto ->
+        List<TrainingExerciseDto> exercises = trainingDto.getExercises();
+        exercises.forEach(trainingExerciseDto ->
                 modelSetService.createSets(trainingExerciseDto.getSets(), id,
                         trainingExerciseDto.getId())
         );
+        Set<Long> exercisesId = exercises.stream()
+                .map(TrainingExerciseDto::getId)
+                .collect(Collectors.toSet());
+        exerciseRepository.updateAllLastDateByIds(exercisesId, LocalDate.now());
         logger.debug(String.format("Training with id %s correctly created", id));
         trainingDto.setId(id);
         trainingDto.setDate(DateToStringConverter.convert(newTraining.getDate()));

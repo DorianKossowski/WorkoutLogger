@@ -3,6 +3,7 @@ package com.zti.workoutLogger.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +15,9 @@ public class Exercise {
 
     @Column
     private String name;
+
+    @Column
+    private LocalDate lastDate;
 
     @JsonIgnore
     @ManyToOne
@@ -78,5 +82,13 @@ public class Exercise {
 
     public void setSets(Set<ModelSet> sets) {
         this.sets = sets;
+    }
+
+    public LocalDate getLastDate() {
+        return lastDate;
+    }
+
+    public void setLastDate(LocalDate lastDate) {
+        this.lastDate = lastDate;
     }
 }

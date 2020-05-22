@@ -37,7 +37,8 @@ public class ExerciseServiceImpl implements ExerciseService {
     public List<ExerciseDto> getAllExercisesByUserId(long userId) {
         return exerciseRepository.findAllByUserId(userId).stream()
                 .map(ExerciseDto::new)
-                .sorted(Comparator.comparing(ExerciseDto::getName))
+                .sorted(Comparator.comparing(ExerciseDto::getLastDate,
+                        Comparator.nullsFirst(Comparator.naturalOrder())).reversed())
                 .collect(Collectors.toList());
     }
 
