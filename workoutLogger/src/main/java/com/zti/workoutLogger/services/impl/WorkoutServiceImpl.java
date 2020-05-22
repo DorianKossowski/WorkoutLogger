@@ -42,7 +42,8 @@ public class WorkoutServiceImpl implements WorkoutService {
     public List<WorkoutDto> getAllWorkoutsByUserId(long userId) {
         return workoutRepository.findAllByUserId(userId).stream()
                 .map(WorkoutDto::new)
-                .sorted(Comparator.comparing(WorkoutDto::getLastDate, Comparator.nullsLast(Comparator.naturalOrder())))
+                .sorted(Comparator.comparing(WorkoutDto::getLastDate,
+                        Comparator.nullsFirst(Comparator.naturalOrder())).reversed())
                 .collect(Collectors.toList());
     }
 

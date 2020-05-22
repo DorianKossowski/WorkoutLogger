@@ -2,14 +2,14 @@ package com.zti.workoutLogger.models.dto;
 
 import com.zti.workoutLogger.models.Exercise;
 import com.zti.workoutLogger.models.Training;
+import com.zti.workoutLogger.utils.DateToStringConverter;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class TrainingDto {
     private long id;
-    private LocalDate date;
+    private String date;
     private List<TrainingExerciseDto> exercises;
 
     public TrainingDto() {
@@ -17,7 +17,7 @@ public class TrainingDto {
 
     public TrainingDto(Training training) {
         this.id = training.getId();
-        this.date = training.getDate();
+        this.date = DateToStringConverter.convert(training.getDate());
         this.exercises = getExercises(training);
     }
 
@@ -48,11 +48,11 @@ public class TrainingDto {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
