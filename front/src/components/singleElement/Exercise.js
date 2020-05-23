@@ -87,12 +87,12 @@ class Exercise extends Component {
                     <XAxis dataKey="key" />
                     <YAxis type="number" domain={['auto', 'auto']} />
                     <Tooltip />
-                    { [...dataKeyNames].map(dataKeyName => <Line type="monotone" dataKey={ dataKeyName } connectNulls={ true }/> ) }
+                    { [...dataKeyNames].map(dataKeyName => <Line key={ `line_${dataKeyName}` } type="monotone" dataKey={ dataKeyName } connectNulls={ true }/> ) }
                     <Legend />
                 </LineChart>
             </ResponsiveContainer>
             <div>
-            { this.state.results.map(result => <ExerciseResultPanel key={ result.id } data={ result }/>) } 
+            { this.state.results.map((result, idx) => <ExerciseResultPanel key={ `ERPanel_${idx}` } data={ result }/>) } 
             </div>
             </>
         );
