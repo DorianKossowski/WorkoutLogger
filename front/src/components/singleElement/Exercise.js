@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { LineChart, Legend, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import _ from 'lodash';
 
 import OvalLoader from '../helpers/OvalLoader';
 import ErrorAlert from '../helpers/ErrorAlert';
@@ -17,6 +19,7 @@ class Exercise extends Component {
     state = {
         exercise : [],
         results: [],
+        chartInputs: [],
         showModal: false,
         loading: true,
         errMsg: ''
@@ -34,7 +37,7 @@ class Exercise extends Component {
             method: 'GET',
             url: `exercises/${ singleElementId }`
         })
-        .then(data => this.setState({ exercise: data.exercise, results: data.results }))
+        .then(data => this.setState({ exercise: data.exercise, results: data.results, chartInputs: data.chartInputs.map(input => input.data) }))
         .catch(error => this.setState({ errMsg: handleError(error, 'Error during getting: ') }))
         .finally(() => this.setState({ loading: false }));
     }
@@ -69,6 +72,25 @@ class Exercise extends Component {
                         singleElement={this.state.exercise}/>
                 </div>
             </div>
+            { _.isEmpty(this.state.results) ? null : this.getResultsRender() }
+            </>
+        );
+    }
+
+    getResultsRender = () => {
+        const dataKeyNames = new Set(this.state.results.map(result => result.name));
+        return (
+            <>
+            <ResponsiveContainer width='100%' height={300}>
+                <LineChart data={this.state.chartInputs} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3"/>
+                    <XAxis dataKey="key" />
+                    <YAxis type="number" domain={['auto', 'auto']} />
+                    <Tooltip />
+                    { [...dataKeyNames].map(dataKeyName => <Line type="monotone" dataKey={ dataKeyName } connectNulls={ true }/> ) }
+                    <Legend />
+                </LineChart>
+            </ResponsiveContainer>
             <div>
             { this.state.results.map(result => <ExerciseResultPanel key={ result.id } data={ result }/>) } 
             </div>

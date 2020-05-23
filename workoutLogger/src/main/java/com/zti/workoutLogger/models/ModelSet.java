@@ -78,7 +78,13 @@ public class ModelSet {
     }
 
     public String print() {
-        return this.reps + " X " + this.weight + "kg";
+        String weightStr;
+        if (this.weight == (long) this.weight) {
+            weightStr = String.format("%d", (long) this.weight);
+        } else {
+            weightStr = String.format("%s", this.weight);
+        }
+        return this.reps + " X " + weightStr + "kg";
     }
 
     @PreRemove

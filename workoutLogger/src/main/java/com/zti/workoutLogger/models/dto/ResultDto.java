@@ -5,6 +5,7 @@ import com.zti.workoutLogger.models.Training;
 import com.zti.workoutLogger.utils.DateToStringConverter;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ResultDto {
@@ -57,5 +58,45 @@ public class ResultDto {
 
     public void setVolume(float volume) {
         this.volume = volume;
+    }
+
+    public NameDate getNameDate() {
+        return new NameDate(name, date);
+    }
+
+    public static class NameDate {
+        private final String name;
+        private final String date;
+
+        public NameDate(String name, String date) {
+            this.name = name;
+            this.date = date;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            NameDate that = (NameDate) o;
+            return Objects.equals(name, that.name) &&
+                    Objects.equals(date, that.date);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(name, date);
+        }
     }
 }

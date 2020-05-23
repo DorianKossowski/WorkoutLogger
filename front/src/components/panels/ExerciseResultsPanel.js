@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { LinkContainer } from "react-router-bootstrap";
 
 import './panelStyle.css';
 
