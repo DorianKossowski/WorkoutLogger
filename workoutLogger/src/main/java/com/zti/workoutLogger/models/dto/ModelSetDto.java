@@ -39,4 +39,8 @@ public class ModelSetDto {
     public void setWeight(float weight) {
         this.weight = weight;
     }
+
+    public float getVolume() {
+        return this.reps * this.weight;
+    }
 }

@@ -48,4 +48,8 @@ public class TrainingExerciseDto {
     public void setSets(List<ModelSetDto> sets) {
         this.sets = sets;
     }
+
+    public float getVolume() {
+        return sets.stream().map(ModelSetDto::getVolume).reduce(0f, Float::sum);
+    }
 }

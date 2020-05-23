@@ -79,15 +79,19 @@ class Exercise extends Component {
 
     getResultsRender = () => {
         const dataKeyNames = new Set(this.state.results.map(result => result.name));
+        let values = [];
+        this.state.chartInputs.forEach(input => values.push(
+            parseFloat(input[_.maxBy(_.keys(input), (k) => k === 'key' ? 0 : parseFloat(input[k]))])
+        ));
         return (
             <>
             <ResponsiveContainer width='100%' height={300}>
                 <LineChart data={this.state.chartInputs} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
                     <CartesianGrid strokeDasharray="3 3"/>
                     <XAxis dataKey="key" />
-                    <YAxis type="number" domain={['auto', 'auto']} />
+                    <YAxis type="number" domain={['auto', _.max(values)]} />
                     <Tooltip />
-                    { [...dataKeyNames].map(dataKeyName => <Line key={ `line_${dataKeyName}` } type="monotone" dataKey={ dataKeyName } connectNulls={ true }/> ) }
+                    { [...dataKeyNames].map(dataKeyName => <Line key={ `line_${dataKeyName}` } stroke={ this.getRandomColor() } dataKey={ dataKeyName } connectNulls={ true }/> ) }
                     <Legend />
                 </LineChart>
             </ResponsiveContainer>
@@ -97,6 +101,15 @@ class Exercise extends Component {
             </>
         );
     }
+
+    getRandomColor = () => {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
 
     getBaseUrl = () => {
         return 'exercises';
