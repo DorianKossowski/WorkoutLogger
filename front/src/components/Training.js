@@ -7,6 +7,7 @@ import api from '../helpers/Api.js';
 import handleError from '../helpers/ErrorHandlingService';
 import TrainingPanel from './panels/TrainingPanel';
 import ErrorAlert from './helpers/ErrorAlert';
+import SuccessAlert from './helpers/SuccessAlert.js';
 import OvalLoader from './helpers/OvalLoader';
 import TrainingStateManager from './helpers/TrainingStateManager';
 import DeleteSingleElementModal from './modals/DeleteSingleElementModal';
@@ -19,6 +20,7 @@ class Training extends Component {
         showModal: false,
         loading: false,
         errMsg: '',
+        successMsg: '',
         trainingId: '',
         trainingDate: '',
         redirect: false
@@ -97,7 +99,7 @@ class Training extends Component {
     applyState = (save = false) => {
         const { workoutId } = this.props.match.params;
         this.setState({ loading: true });
-        this.setState({ errMsg: '' });
+        this.setState({ errMsg: '', successMsg: '' });
         
         let applyMethod;
         let applyUrl;
@@ -116,6 +118,7 @@ class Training extends Component {
         })
         .then(data => {
             this.setState({ trainingId: data.id, trainingDate: data.date, exercises: data.exercises });
+            this.handleSuccess();
             if(save === true) {
                 this.setState({ redirect: true });
             }
@@ -128,10 +131,16 @@ class Training extends Component {
         this.applyState(true)
     }
 
+    handleSuccess = () => {
+        this.setState({ successMsg: 'Applied correctly' });
+        setTimeout(() => { this.setState({ successMsg: '' }) }, 2000);
+    }
+
     render = () => {
         return (
             <div>
                 <ErrorAlert msg={this.state.errMsg}/>
+                <SuccessAlert msg={this.state.successMsg}/>
                 <h1>Training</h1>
                 { this.state.loading ? <OvalLoader/> : this.getExercisesRender() }
                 { this.state.redirect ? this.getRedirect() : null }

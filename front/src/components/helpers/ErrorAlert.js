@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { Alert } from 'react-bootstrap';
 
-import './errorAlertStyle.css';
+import './alertStyle.css';
 
 class ErrorAlert extends Component {
 
     render() {
         return (
-            this.props.msg.length ? <Alert variant="danger" className="errorAlertStyle">{this.props.msg}</Alert> : null
+            this.props.msg.length ? <Alert variant="danger" className="alertStyle">{this.props.msg}</Alert> : null
         );
     }
 }
