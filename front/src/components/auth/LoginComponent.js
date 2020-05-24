@@ -49,7 +49,7 @@ class LoginComponent extends Component {
                 <div className='authFormLogoStyle'>
                     <h1>Workout Logger</h1>
                 </div>
-                {this.state.redirect ? <Redirect to='/'/> : this.getLoginForm()}
+                {this.state.redirect ? <Redirect to='/exercises'/> : this.getLoginForm()}
                 <div className='dontHaveAccountStyle'>Don't have an account? <Link to='/signup'>Sign up</Link></div>
             </div>
         )
@@ -78,7 +78,6 @@ class LoginComponent extends Component {
                             <Field className='form-control' name='password' type="password" placeholder="password"/>
                             <ErrorMessage className='errorMsgStyle' name="password" component="div"/>
                         </div>
-                        <div className='forgotPasswordTextStyle'><a>Forgot your password?</a></div>
                         <Button type="submit" disabled={isSubmitting}>Submit</Button>
                     </Form>)}
                 </Formik>

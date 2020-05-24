@@ -18,14 +18,11 @@ class AuthorizedViewContainer extends Component {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className='mr-auto'>
-                        <LinkContainer to='/'><Nav.Link>Home</Nav.Link></LinkContainer>
                         <LinkContainer to='/exercises'><Nav.Link>Exercises</Nav.Link></LinkContainer>
                         <LinkContainer to='/workouts'><Nav.Link>Workouts</Nav.Link></LinkContainer>
                     </Nav>
                     <Nav>
                         <NavDropdown title={"Hello " + AuthenticationService.getAuthenticatedUser()}  id="basic-nav-dropdown">
-                        <NavDropdown.Item>Account</NavDropdown.Item>
-                        <NavDropdown.Divider />
                         <LinkContainer to='/logout'><NavDropdown.Item>Log out</NavDropdown.Item></LinkContainer>
                         </NavDropdown>
                     </Nav>
