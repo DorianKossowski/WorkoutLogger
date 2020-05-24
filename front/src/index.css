@@ -57,11 +57,6 @@ P {
   padding: 10px 30px;
 }
 
-.formGroupStyle {
-  width: 400px;
-  margin: 20px auto;
-}
-
 .errorMsgStyle {
   color: #c00f0f;
   margin: 5px 0;
