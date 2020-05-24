@@ -10,11 +10,11 @@ class ExerciseResultPanel extends Component {
             <Container fluid className='workoutPanelWrapper'>
                 <Row className='workoutPanelContentHeader'>
                     <Col xs lg className='workoutPanelContentSimple'>{ this.props.data.name } - { this.props.data.date }</Col>
-                    <Col xs lg className='workoutPanelContentSimple'>Volume</Col>
+                    <Col xs={4} lg className='workoutPanelContentSimple'>Volume</Col>
                 </Row>
                 <Row className='workoutPanelContent'>
                     <Col xs lg className='workoutPanelContentSimple'>{ this.props.data.sets }</Col>
-                    <Col xs lg className='workoutPanelContentSimple'>{ this.props.data.volume }</Col>
+                    <Col xs={4} lg className='workoutPanelContentSimple'>{ this.props.data.volume }</Col>
                 </Row>
             </Container>
         );
