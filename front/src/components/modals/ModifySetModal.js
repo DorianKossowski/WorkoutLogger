@@ -39,12 +39,12 @@ class EditSetModal extends Component {
             <>
             <ErrorAlert msg={this.state.errMsg}/>
             <Formik
-            initialErrors={{ reps: '', weight: '' }}
+            initialErrors={{ }}
             initialValues={{ reps: this.props.data.reps, weight: this.props.data.weight }}
             validate={this.validateFields()}
             onSubmit={this.handleSubmit()}
             >
-            {({ handleSubmit, isSubmitting }) => (
+            {({ handleSubmit, isSubmitting, values, isValid }) => (
                 <Form>
                     <Modal.Body>
                         <Form.Label className='labelStyle'>Result</Form.Label>
@@ -72,6 +72,7 @@ class EditSetModal extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant='danger' onClick={this.handleDelete}>Delete</Button>
+                        <Button variant='info' onClick={() => this.handleDuplicate(values)} disabled={!isValid}>Duplicate</Button>
                         <Button type='submit' onClick={handleSubmit} disabled={isSubmitting}>Modify</Button>
                     </Modal.Footer>
                 </Form>
@@ -108,6 +109,11 @@ class EditSetModal extends Component {
     handleDelete = () => {
         this.handleClose();
         this.props.postAction({ exerciseId: this.props.exerciseId, id: this.props.data.id });
+    }
+
+    handleDuplicate = (values) => {
+        this.handleClose();
+        this.props.postAction({ exerciseId: this.props.exerciseId, set: { ...values } });
     }
 }
 
