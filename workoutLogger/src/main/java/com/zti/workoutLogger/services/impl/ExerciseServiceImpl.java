@@ -78,6 +78,14 @@ public class ExerciseServiceImpl implements ExerciseService {
         Set<ModelSet> sets = exercise.getSets();
         Map<Training, List<ModelSet>> setsByTraining = sets.stream()
                 .collect(groupingBy(ModelSet::getTraining));
+
+        setsByTraining.entrySet().forEach(trainingListEntry -> trainingListEntry.setValue(
+                trainingListEntry.getValue().stream()
+                        .sorted(Comparator.comparing(ModelSet::getId))
+                        .collect(Collectors.toList())
+                )
+        );
+
         Set<ResultDto> results = setsByTraining.entrySet().stream()
                 .map(setByTraining -> new ResultDto(setByTraining.getKey(), setByTraining.getValue()))
                 .sorted(Comparator.comparing(ResultDto::getDate).reversed())

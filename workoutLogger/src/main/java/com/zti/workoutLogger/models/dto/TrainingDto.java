@@ -1,6 +1,7 @@
 package com.zti.workoutLogger.models.dto;
 
 import com.zti.workoutLogger.models.Exercise;
+import com.zti.workoutLogger.models.ModelSet;
 import com.zti.workoutLogger.models.Training;
 import com.zti.workoutLogger.utils.DateToStringConverter;
 
@@ -29,6 +30,7 @@ public class TrainingDto {
         exercises.forEach(exercise -> {
             List<ModelSetDto> modelSetDtos = training.getSets().stream()
                     .filter(modelSet -> modelSet.getExercise().equals(exercise))
+                    .sorted(Comparator.comparing(ModelSet::getId))
                     .map(ModelSetDto::new)
                     .collect(Collectors.toList());
             exerciseDtos.add(new TrainingExerciseDto(exercise, modelSetDtos));
