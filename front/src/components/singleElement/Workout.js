@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { LineChart, Legend, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Button } from 'react-bootstrap';
 import _ from 'lodash'
 
 import api from '../../helpers/Api.js';
@@ -19,6 +20,7 @@ class Workout extends Component {
         chartInputs: [],
         showModal: false,
         loading: true,
+        redirect: false,
         errMsg: ''
     }
 
@@ -61,7 +63,8 @@ class Workout extends Component {
                         singleElement={this.state.workout}/>
                 </div>
             </div>
-            { _.isEmpty(this.state.trainings) ? null : this.getResultsRender() }
+            { _.isEmpty(this.state.trainings) ? this.getTrainButton() : this.getResultsRender() }
+            { this.state.redirect ? <Redirect to={`/workouts/${ this.props.match.params.singleElementId }/training`}/> : null }
             </>
         );
     }
@@ -84,11 +87,20 @@ class Workout extends Component {
                     <Legend />
                 </LineChart>
             </ResponsiveContainer>
+            { this.getTrainButton() }
             <div>
             { this.state.trainings.map(training => <WorkoutTrainingPanel key={ training.id } 
                 data={{ workoutId: this.state.workout.id, training: training }}/>) } 
             </div>
             </>
+        );
+    }
+
+    getTrainButton = () => {
+        return (
+            <div>
+                <Button variant="outline-dark" onClick={() => this.setState({ redirect: true })}>Train</Button>
+            </div>
         );
     }
 
